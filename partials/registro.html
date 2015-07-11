@@ -1,0 +1,78 @@
+<script>
+    $(document).ready(function() {
+    	$(document).ready(function() {
+            $.material.init();
+        });
+        $('#formRegistro').animate({
+            'opacity':'1'
+        }, 1500);
+         $('#domisil').animate({
+         	'margin-left':'50px',
+            'opacity':'1'
+        }, 1500);
+    });
+</script>
+
+<div class="col-lg-6 col-md-6 formRegistro" id="formRegistro" ng-controller="RegistroCtrl">
+	<h1 class="titulo tituloForm">Registro de empresas</h1>
+	<form ng-submit="registrarEmpresa()" class="form-horizontal" enctype="multipart/form-data">
+	    <fieldset>
+	        <div class="form-group">
+	            <label for="nombreEmpresa" class="col-lg-2 control-label">Nombre empresa</label>
+	            <div class="col-lg-10">
+	                <input  name="nombreEmpresa" type="text" class="form-control" id="nombreEmpresa" placeholder="Nombre empresa">
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label for="nitEmpresa" class="col-lg-2 control-label">NIT empresa</label>
+	            <div class="col-lg-10">
+	                <input name="nitEmpresa" type="text" class="form-control" id="nitEmpresa" placeholder="NIT de la empresa">
+	                <span class="help-block">Si desea generar una factura de servicio por favor ingrese el NIT de su empresa.</span>
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label for="tarifaKm" class="col-lg-2 control-label">Tarifa KM</label>
+	            <div class="col-lg-10">
+	                <input name="tarifaKm" type="text" class="form-control" id="tarifaKm" placeholder="Tarifa por kilometro">
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label for="telefono" class="col-lg-2 control-label">Taeléfono</label>
+	            <div class="col-lg-10">
+	                <input name="telefono" type="text" class="form-control" id="telefono" placeholder="Teléfono">
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label for="email" class="col-lg-2 control-label">Email</label>
+	            <div class="col-lg-10">
+	                <input name="email" type="email" class="form-control" id="email" placeholder="Correo eléctronico">
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label for="logoEmpresa" class="col-lg-2 control-label">File</label>
+	            <div class="col-lg-10">
+	                <input  type="text" readonly="" class="form-control floating-label" placeholder="Browse...">
+	                <input name="logoEmpresa" type="file" id="logoEmpresa" multiple="">
+	            </div>
+        	</div>
+
+	        <div class="form-group">
+	            <div class="col-lg-10 col-lg-offset-2">
+	                <button class="btn btn-default">Cancel</button>
+	                <button type="submit" class="btn btn-primary">Registrar</button>
+	            </div>
+	        </div>
+	    </fieldset>
+	</form>
+	<div class="respuesta">{{respuesta}}</div>
+</div>
+
+
+<div class="col-lg-6 col-md-6">
+	
+</div>

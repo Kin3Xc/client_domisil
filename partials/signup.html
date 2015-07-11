@@ -1,0 +1,38 @@
+<script>
+    $(document).ready(function() {
+    	$(document).ready(function() {
+            $.material.init();
+        });
+    });
+</script>
+
+<div class="row">
+	<div class="col-sm-10 col-md-10">
+		<div class="panel panel-success registro">
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Registro</h3>
+		    </div>
+		    <div class="panel-body">
+		       <form class="orm-horizontal" ng-submit="signup.signup()" method="post">
+		       		<div class="form-group">
+		       			<label class="control-label">Usuario</label>
+					    <div class="input-group col-md-4">
+					        <span class="input-group-addon mdi-social-person icon-text"></span>
+					        <input class="form-control" type="text" ng-model="signup.usuario">
+					    </div>
+		       		</div>
+
+		       		<div class="form-group">
+		       			<label class="control-label">Password</label>
+					    <div class="input-group col-md-4">
+					        <span class="input-group-addon mdi-navigation-apps icon-text"></span>
+					        <input class="form-control" type="password" ng-model="signup.password">
+					    </div>
+		       		</div>
+		       		
+					<button class="btn btn-primary" type="submit">Registrarse</button>
+				</form>
+		    </div>
+		</div>
+	</div>
+</div>

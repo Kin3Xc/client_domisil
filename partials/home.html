@@ -1,0 +1,98 @@
+<script>
+    $(document).ready(function() {
+    	$(document).ready(function() {
+            $.material.init();
+        });
+
+        $('#panel').animate({
+            'opacity':'1'
+        }, 1500);
+         $('#domisil').animate({
+         	'margin-left':'50px',
+            'opacity':'1'
+        }, 1500);
+
+       $('#cotizar').click(function(){
+       	 $('#body').animate({
+        	'background-image':'none'
+          }, 1500);
+       });
+    });
+</script>
+
+<div class="row home" ng-controller="cotizadorController">
+	<ul class="menu-home" ng-controller="HomeCtrl">
+	<li class="dropdown" ng-if="autenticar()">
+		<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+            <li><a href="#/perfil">Perfil</a></li>
+            <li><a href="#">Historial de servicios</a></li>
+            <!-- <li class="divider"></li> -->
+            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
+        </ul>
+	</li>
+	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
+	<li ng-if="!autenticar()" >|</li>
+	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
+	</ul>
+	<div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
+		<div class="panel panel-info" id="panel">
+
+		        <h1 class="titulo">DOMISIL</h1>
+		        <h4 class="tagLine">Envíos inmediatos en Bogotá</h4>
+
+		    <div class="panel-body">
+		       <form role="form" ng-submit="mostrarInfo()" class="form-horizontal formulario" >
+			       	<fieldset>
+				        <div class="form-group">
+				            <label for="origen" class="control-label">Origen</label>
+				            <div class="col-lg-10 input-group">
+				            	<span class="input-group-addon mdi-maps-place icon-text" id="origen-icon"></span>
+				                <input ng-model="origen" type="text" class="form-control" id="origen" name="origen" autofocus required />
+				            </div>
+				        </div>
+
+			            <div class="form-group">
+				            <label for="destino" class="control-label">Destino</label>
+				            <div class="col-lg-10 input-group">
+				            	<span class="input-group-addon mdi-maps-place icon-text" id="destino-icon"></span>
+				                <input ng-model="destino" type="text" class="form-control" id="destino" name="destino" required />
+				            </div>
+				        </div>
+
+				        <div class="form-group">
+				            <div class="col-lg-10 col-lg-offset-2">
+				            	<button type="submit" id="cotizar" class="btn btn-info" >Cotizar</button>
+				            </div>
+				        </div>
+				        <div class="alert alert-dismissable alert-success" ng-show="ver">
+						    <button type="button" class="close" data-dismiss="alert">×</button>
+						    <strong>Distancia: {{distancia}} </strong> 
+						</div>
+			       	</fieldset>
+		       </form>
+		    </div>
+		</div>
+	</div>
+	<div class=" mapa animate-show" id='map_canvas'>
+	</div>
+<!-- 	<div class=""></div> -->
+	<div class="animate-show col-lg-6 col-md-6 col-sm-6 col-xs-12 resultados" ng-show="ver">
+
+		<div class="panel panel-default panel-resultados">
+		    <div class="panel-heading">Resultados</div>
+		    <div class="panel-body contenedor" ng-repeat="empresa in empresas">
+		        <div class="proveedor">
+					<img class="foto-proveedor" src="img/img-proveedores/foto.jpg" alt="Empresa" >
+				</div>
+				<div class="resumen">
+					<p><span class="item">Empresa:</span> {{empresa.nombreEmpresa}}</p>
+					<p><span class="item">Precio:</span> <span class="label label-info">{{empresa.tarifaKm * distancia | currency : 'CO$' : 0}}</span></p>
+				</div>
+				<div class="btnComprar">
+					<button ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )" class="btn btn-success btnServicio">Pedir servicio</button>
+				</div>
+		    </div>
+		</div>
+	</div>
+</div>
