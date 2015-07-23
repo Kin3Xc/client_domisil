@@ -10,6 +10,35 @@
 
     });
 </script>
+
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand domisil" href="#/home">Domisil Web</a>
+	</div>
+	
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+	<ul class="menu-home" ng-controller="HomeCtrl">
+	<li class="dropdown" ng-if="autenticar()">
+		<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+            <li><a href="#/perfil">Perfil</a></li>
+            <li><a href="#">Historial de servicios</a></li>
+            <!-- <li class="divider"></li> -->
+            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
+        </ul>
+	</li>
+	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
+	<li ng-if="!autenticar()" >|</li>
+	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
+	</ul>
+	</div>
+</div>
+
 <div ng-Controller="ServiceCrtl"  class="service-container">
 <div class="row service">
 	<div class="col-md-6">
@@ -66,7 +95,6 @@
 								    <label class="control-label" for="pwd">Usuario</label>
 								    <input ng-model="login.password" type="password" class="form-control" id="pwd">
 								</div>
-
 								    <button type="submit" class="btn btn-primary">Ingresar</button>
 					        </form>
 					    </div>

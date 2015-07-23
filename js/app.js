@@ -4,6 +4,10 @@ var app = angular.module('domisilapp', ['domisilapp.controllers', 'domisilapp.se
 //Configuración de rutas de la aplicacion web
 app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 
+	// $authProvider.unlinkUrl = '/auth/unlink/';
+ 	$authProvider.authHeader = 'Authorization';
+	$authProvider.withCredentials = false; // Send POST request with credentials
+
 	// parametros de configuracion
 	$authProvider.loginUrl = "http://localhost:8000/auth/login";
 	$authProvider.signupUrl = "http://localhost:8000/auth/signup";
@@ -30,7 +34,6 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 	  //         }
 	  //       }
 		})
-
 		.state('registro',{
 			url: '/registro',
 			templateUrl: 'partials/registro.html',
@@ -53,7 +56,7 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			url:'/login',
 			templateUrl: 'partials/login.html',
 			controller: 'LoginController',
-			controllerAs: 'login'
+			controllerAs: 'login',
 		})
 
 		.state('signup', {

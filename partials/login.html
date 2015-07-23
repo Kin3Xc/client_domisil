@@ -9,15 +9,42 @@
     });
 </script>
 
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand domisil" href="#/home">Domisil Web</a>
+	</div>
+	
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+	<ul class="menu-home" ng-controller="HomeCtrl">
+	<li class="dropdown" ng-if="autenticar()">
+		<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+            <li><a href="#/perfil">Perfil</a></li>
+            <li><a href="#">Historial de servicios</a></li>
+            <!-- <li class="divider"></li> -->
+            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
+        </ul>
+	</li>
+	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
+	<li ng-if="!autenticar()" >|</li>
+	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
+	</ul>
+	</div>
+</div>
 
 <div class="row"> 
-	<div class="col-sm-4 col-md-4 login" id="login">
+	<div class="col-sm-6 col-md-6 login" id="login">
 		<div class="panel panel-success ">
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Login de usuario</h3>
 		    </div>
 		    <div class="panel-body">
-		       <form class="form-horizontal" ng-submit="login.login()" method="post">
+		       <form class="form-horizontal frm-login" ng-submit="login.login()" method="post">
 		       		<div class="form-group">
 		       			<label class="control-label">Usuario</label>
 					    <div class="input-group">
@@ -37,9 +64,6 @@
 				</form>
 				 <button class="btn btn-block btn-info" ng-click="login.authenticate('facebook')">
      				<i class=""></i>Iniciar sesión usando Facebook
-        		</button>
-        		 <button class="btn btn-block btn-info" ng-click="login.authenticate('twitter')">
-     				<i class=""></i>Iniciar sesión usando Twitter
         		</button>
 		    </div>
 		</div>

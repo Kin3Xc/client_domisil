@@ -298,16 +298,18 @@ app.controller('ResumenCrtl', ['$scope', 'Compra', '$auth', '$location', 'Empres
 }]);
 
 // para registrar usuarios nuevos al sistema
-app.controller('SignUpController', ['$scope', '$auth', '$location', function($scope, $auth, $location){
+app.controller('SignUpController', ['$scope', '$auth', '$location', 'localStorageService', function($scope, $auth, $location, localStorageService){
 	var vm = this;
 	this.signup = function(){
 		$auth.signup({
 			usuario: vm.usuario,
 			password: vm.password
 		})
-		.then(function(){
+		.then(function(data){
 			//si ha sido registrado correctamente 
 			// redirigimos a otra parte
+			console.log(data.data.userId);
+			localStorageService.set('idUser', data.data.userId);
 			$location.path('/home');
 		})
 		.catch(function(response){
@@ -344,14 +346,15 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'lo
 	this.authenticate = function(provider) {
 		console.log('Aqui');
       $auth.authenticate(provider)
-        .then(function() {
-        	// console.log('Ingresado');
-          $alert({
-            content: 'You have successfully logged in',
-            animation: 'fadeZoomFadeDown',
-            type: 'material',
-            duration: 3
-          });
+        .then(function(data) {
+        	// console.log(data.data.userId);
+			localStorageService.set('idUser', data.data.userId);//almaceno el id del usuario en el localstorage
+          // $alert({
+          //   content: 'You have successfully logged in',
+          //   animation: 'fadeZoomFadeDown',
+          //   type: 'material',
+          //   duration: 3
+          // });
         })
         .catch(function(response) {
         	// console.log('Error');
