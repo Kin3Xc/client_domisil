@@ -1,4 +1,4 @@
-var app = angular.module('domisilapp.controllers', ['ui.router', 'ngAnimate', 'satellizer', 'LocalStorageModule'])
+var app = angular.module('domisilapp.controllers', ['ui.router', 'ngAnimate', 'satellizer', 'LocalStorageModule', 'mgcrea.ngStrap'])
 
 
 // home '/' controller
@@ -106,7 +106,7 @@ app.controller('cotizadorController', ['$scope', '$http', 'Compra', '$location',
 
 		//Peticion get a la API para traer todas las epmresas y sus tarifas 
 	  $http.defaults.headers.common["X-Custom-Header"] = "Angular.js";
-	  $http.get('http://192.168.0.30:5000/api/emp-domiciliarios').
+	  $http.get('http://localhost:8000/api/emp-domiciliarios').
 	  	success(function(data, status, headers, config){
 	  		$scope.empresas = data;
 	  	});
@@ -136,7 +136,7 @@ app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
 	$scope.empresa = {};
 	$scope.registrarEmpresa = function(){
 		console.log($scope.empresa);
-			$http.post('http://192.168.0.30:5000/api/emp-domiciliarios', $scope.empresa)
+			$http.post('http://localhost:8000/api/emp-domiciliarios', $scope.empresa)
 			.success(function(data) {
 					//$scope.empresa = {}; // Borramos los datos del formulario
 					$scope.empresas = data;
@@ -273,7 +273,7 @@ app.controller('ResumenCrtl', ['$scope', 'Compra', '$auth', '$location', 'Empres
 		}
 
 		$scope.sendService = function(){
-			$http.post('http://192.168.0.30:5000/api/service', myService)
+			$http.post('http://localhost:8000/api/service', myService)
 			.success(function(data) {
 					//$scope.empresa = {}; // Borramos los datos del formulario
 					// $scope.empresas = data;
@@ -318,7 +318,7 @@ app.controller('SignUpController', ['$scope', '$auth', '$location', function($sc
 }]);
 
 // para ingresar al sistema sesión user
-app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'localStorageService', function($scope, $auth, $location, Compra, localStorageService){
+app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'localStorageService', '$alert', function($scope, $auth, $location, Compra, localStorageService, $alert){
 	var vm = this;
 
 	this.login = function(){
@@ -345,22 +345,23 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'lo
 		console.log('Aqui');
       $auth.authenticate(provider)
         .then(function() {
-        	console.log('Ingresado');
-          // $alert({
-          //   content: 'You have successfully logged in',
-          //   animation: 'fadeZoomFadeDown',
-          //   type: 'material',
-          //   duration: 3
-          // });
+        	// console.log('Ingresado');
+          $alert({
+            content: 'You have successfully logged in',
+            animation: 'fadeZoomFadeDown',
+            type: 'material',
+            duration: 3
+          });
         })
         .catch(function(response) {
+        	// console.log('Error');
         	console.log(response);
-          // $alert({
-          //   content: response.data ? response.data.message : response,
-          //   animation: 'fadeZoomFadeDown',
-          //   type: 'material',
-          //   duration: 3
-          // });
+          $alert({
+            content: response.data,
+            animation: 'fadeZoomFadeDown',
+            type: 'material',
+            duration: 3
+          });
         });
     };
 

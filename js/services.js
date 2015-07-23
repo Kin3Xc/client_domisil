@@ -6,7 +6,7 @@ app.factory('Cuenta', function($http, localStorageService) {
     return {
       getProfile: function() {
       	var id = localStorageService.get('idUser');
-        return $http.get('http://192.168.0.30:5000/api/users/'+id);
+        return $http.get('http://localhost:8000/api/users/'+id);
       }
     };
 });
@@ -16,7 +16,7 @@ app.factory('Empresa', function($http, localStorageService) {
     return {
       getEmpresa: function() {
       	var id = localStorageService.get('idEmpresa');
-        return $http.get('http://192.168.0.30:5000/api/emp-domiciliarios/'+id);
+        return $http.get('http://localhost:8000/api/emp-domiciliarios/'+id);
       }
     };
 });

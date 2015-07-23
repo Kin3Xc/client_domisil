@@ -5,22 +5,11 @@ var app = angular.module('domisilapp', ['domisilapp.controllers', 'domisilapp.se
 app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 
 	// parametros de configuracion
-	$authProvider.loginUrl = "http://192.168.0.30:5000/auth/login";
-	$authProvider.signupUrl = "http://192.168.0.30:5000/auth/signup";
+	$authProvider.loginUrl = "http://localhost:8000/auth/login";
+	$authProvider.signupUrl = "http://localhost:8000/auth/signup";
 
 	$authProvider.tokenName = "token";
 	$authProvider.tokenPrefix = "Domisil_App";
-
-	$urlRouterProvider.otherwise('/');
-
-	$authProvider.facebook({
-      clientId: '1650018758546033'
-      // clientId: '643583095778335'
-    });
-
-    $authProvider.twitter({
-      url: '/auth/twitter'
-    });
 
 	// defino rutas 
 	$stateProvider
@@ -28,21 +17,31 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			url: '/',
 			templateUrl: 'partials/home.html',
 			controller: 'HomeCtrl'
+			// resolve: {
+	  //         authenticated: function($q, $location, $auth) {
+	  //           var deferred = $q.defer();
+
+	  //           if (!$auth.isAuthenticated()) {
+	  //             $location.path('/login');
+	  //           } else {
+	  //             deferred.resolve();
+	  //           }
+	  //           return deferred.promise;
+	  //         }
+	  //       }
 		})
 
 		.state('registro',{
 			url: '/registro',
 			templateUrl: 'partials/registro.html',
 			controller: 'RegistroCtrl'
-
 		})
 
 		.state('service',{
 			url: '/service',
 			templateUrl: 'partials/service.html',
 			controller: 'ServiceCrtl',
-			controllerAs: 'login',
-
+			controllerAs: 'login'
 		})
 
 		.state('resumen',{
@@ -74,6 +73,12 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			controller: 'PrivateController',
 			controllerAs: 'private'
 		});
+
+		$urlRouterProvider.otherwise('/');
+
+		$authProvider.facebook({
+	      clientId: '104801699865242'
+	    });
 });
 
 

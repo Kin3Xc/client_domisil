@@ -101,6 +101,9 @@ body{
 	border-radius: 10px;
 	/*margin-right: 20px;*/
 }
+.frm-login{
+	padding: 10px;
+}
 .panel-resultados{
 	margin-top: 10px;
 }
@@ -135,11 +138,14 @@ body{
 	color: #16a085;
 }
 .login{
-	  float: none;
+	float: none;
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 15%;
+}
+.navbar{
+	background-color: transparent !important;
 }
 .menu-home{
 	float:right;
@@ -153,7 +159,7 @@ body{
 	list-style: none;	
 	float: left;
 	margin: 0;
-	padding: 4px;
+	padding: 4px !important;
 }
 .menu-footer{
 	float:left;
@@ -167,6 +173,9 @@ body{
 	float: left;
 	margin: 0;
 	padding: 4px;
+}
+.domisl{
+	margin-left: 10px;
 }
 
 .animate-show.ng-hide-add, 
