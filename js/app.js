@@ -21,19 +21,26 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			url: '/',
 			templateUrl: 'partials/home.html',
 			controller: 'HomeCtrl'
-			// resolve: {
-	  //         authenticated: function($q, $location, $auth) {
-	  //           var deferred = $q.defer();
-
-	  //           if (!$auth.isAuthenticated()) {
-	  //             $location.path('/login');
-	  //           } else {
-	  //             deferred.resolve();
-	  //           }
-	  //           return deferred.promise;
-	  //         }
-	  //       }
 		})
+
+		.state('perfil',{
+			url: '/perfil',
+			templateUrl: 'partials/perfil.html',
+			controller: 'PerfilCtrl',
+			resolve: {
+	          authenticated: function($q, $location, $auth) {
+	            var deferred = $q.defer();
+
+	            if (!$auth.isAuthenticated()) {
+	              $location.path('/login');
+	            } else {
+	              deferred.resolve();
+	            }
+	            return deferred.promise;
+	          }
+	        }
+		})
+
 		.state('registro',{
 			url: '/registro',
 			templateUrl: 'partials/registro.html',
@@ -45,6 +52,12 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			templateUrl: 'partials/service.html',
 			controller: 'ServiceCrtl',
 			controllerAs: 'login'
+		})
+
+		.state('myservices',{
+			url: '/myservices',
+			templateUrl: 'partials/myservices.html',
+			controller: 'MyservicesCtrl'
 		})
 
 		.state('resumen',{

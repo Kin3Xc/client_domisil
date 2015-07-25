@@ -16,6 +16,25 @@ app.controller('HomeCtrl', ['$scope', 'localStorageService','Cuenta', '$auth', f
     };
 }]);
 
+// controlador para la administración de la cuenta de usuario
+app.controller('PerfilCtrl',['$scope', 'Cuenta', function($scope, Cuenta){
+	// cargo los datos del usuario
+	Cuenta.getProfile()
+		.success(function(data) {
+          $scope.user = data;
+        });
+}]);
+
+// controlador para la gestion y control de servicios realizados por el usuario
+app.controller('MyservicesCtrl', ['$scope', 'ServicioUser', function($scope, ServicioUser){
+	// traigo todos los servicios del usuario actual
+	$scope.hayserives = true;
+	ServicioUser.getServiceUser()
+		.success(function(servicios){
+			$scope.services = servicios;
+			if (servicios !="") {$scope.hayserives=false};
+		});
+}]);//fin controlador MyservicesCtrl
 
 app.controller('PrivateController', ['$scope', '$auth', '$location', function($scope, $auth, $location){
 	if (!$auth.isAuthenticated()) {
@@ -25,7 +44,6 @@ app.controller('PrivateController', ['$scope', '$auth', '$location', function($s
     }else{
     	$scope.mensaje = 'ahora si';	
     }
-	
 }]);
 
 // para enviar el token con cada peticion http
@@ -50,7 +68,7 @@ app.config(['$httpProvider', 'satellizer.config', function($httpProvider, config
 
 // Creo un controlador para manejar la parte de la cotización
 // del usuario
-app.controller('cotizadorController', ['$scope', '$http', 'Compra', '$location', 'geolocation','localStorageService', 'Empresa', function($scope, $http, Compra, $location, geolocation, localStorageService, Empresa){
+app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocation','localStorageService', 'Empresa', function($scope, $http, $location, geolocation, localStorageService, Empresa){
 
 	$scope.ver = false;
 	geolocation.buscar();
@@ -103,7 +121,6 @@ app.controller('cotizadorController', ['$scope', '$http', 'Compra', '$location',
 		});
 
 
-
 		//Peticion get a la API para traer todas las epmresas y sus tarifas 
 	  $http.defaults.headers.common["X-Custom-Header"] = "Angular.js";
 	  $http.get('http://localhost:8000/api/emp-domiciliarios').
@@ -115,15 +132,17 @@ app.controller('cotizadorController', ['$scope', '$http', 'Compra', '$location',
 	//Funcion para pasar los datos del servicios seleccionado por
 	//el usuario a la siguiente vista donde realizará la validación
 	$scope.servicioSeleccionado = function (id, valor){
-		localStorageService.set('idEmpresa', id);
+		// creo un objeto con el servicio para almacenarlo en el localstorage
+		var service = {
+			idEmpresa: id,
+			estado: "En proceso",
+			origen: $scope.origen,
+			destino: $scope.destino,
+			valorService: valor
+		};
 
-		// Compra.servicio.empresa = "TUSDOMICILIOS.COM";
-		Compra.servicio.valor = valor;
-		Compra.servicio.origen = $scope.origen;
-		Compra.servicio.destino = $scope.destino;
-		Compra.servicio.estado = "En proceso";
-		Compra.servicio.tipoPago = $scope.tipoPago;
-
+		// almeceno el servicio en el navegador del cliente
+		localStorageService.set('service', service);
 		$location.url("/service");
 	};
 
@@ -135,71 +154,88 @@ app.controller('cotizadorController', ['$scope', '$http', 'Compra', '$location',
 app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
 	$scope.empresa = {};
 	$scope.registrarEmpresa = function(){
-		console.log($scope.empresa);
-			$http.post('http://localhost:8000/api/emp-domiciliarios', $scope.empresa)
-			.success(function(data) {
-					//$scope.empresa = {}; // Borramos los datos del formulario
-					$scope.empresas = data;
-					$scope.respuesta = "El registro fue éxitoso!";
-					console.log('Se guardo esto: '+ $scope.empresas);
-				})
-			.error(function(data) {
-				$scope.respuesta = "Error en el registro!";
-				console.log('Error: ' + data);
-			});
+		// console.log('Logo: '+$scope.empresa.logoEmpresa);
+		// $http.post('http://localhost:8000/api/emp-domiciliarios', $scope.empresa)
+		// 	.success(function(data) {
+		// 		//$scope.empresa = {}; // Borramos los datos del formulario
+		// 		$scope.empresas = data;
+		// 		$scope.respuesta = "El registro fue éxitoso!";
+		// 		console.log($scope.empresas);
+		// 	})
+		// .error(function(data) {
+		// 	$scope.respuesta = "Error en el registro!";
+		// 	console.log('Error: ' + data);
+		// });
+
+        var file =$scope.logoEmpresa;
+        var fd = new FormData();
+        fd.append('nombreEmpresa', $scope.nombreEmpresa);
+        fd.append('nitEmpresa', $scope.nitEmpresa);
+        fd.append('tarifaKm', $scope.tarifaKm);
+        fd.append('telefono', $scope.telefono);
+        fd.append('email', $scope.email);
+        fd.append('logoEmpresa', file);
+
+        console.log(fd);
+        $http.post('http://localhost:8000/api/emp-domiciliarios', fd, {
+            transformRequest: angular.identity, 
+            headers: {'Content-Type': undefined}
+            })
+            .success(function(response){
+                //Guardamos la url de la imagen y hacemos que la muestre.
+                // $scope.empresa.logoEmpresa = response;
+                $scope.img=true;
+                // $scope.empresas = data;
+				$scope.respuesta = "El registro fue éxitoso!";
+				console.log(response);
+            })
+            .error(function(response){
+
+        });
 	};
 }]);
 //Fin controller empresa
 
 
 //Controlador para gestionar toda la parte del servicios hasta el envio del mismo
-app.controller('ServiceCrtl', ['$scope', 'Compra', '$location', '$auth', 'Empresa', function($scope, Compra, $location, $auth, Empresa){
+app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'localStorageService', function($scope, $location, $auth, Empresa, localStorageService){
 	$scope.mostrarLogin = true;
 
 	//Valido que el user este logueado para mostrarle el login y el registro
 	if ($auth.isAuthenticated()) {
-		console.log('Aqui');
 		$scope.mostrarLogin = false;
 	}
 	
+	// funcion para verificar que hay un usuario logueado
 	$scope.autenticar = function() {
       return $auth.isAuthenticated();
     };
 
+    // traigo los datos de la empresa
 	Empresa.getEmpresa()
 		.success(function(data){
-			console.log(data[0].nombreEmpresa);
 			$scope.empresa= data[0].nombreEmpresa;
-			
 	});
 
-
+	service = localStorageService.get('service');
 	$scope.resumen = "Resumen del servicio";
 	// $scope.empresa = Compra.servicio.empresa;
-	$scope.valor = Compra.servicio.valor;
-	$scope.origen = Compra.servicio.origen;
-	$scope.destino = Compra.servicio.destino;
-	
-	// $scope.resumenFinal = function (){
-	// 	Compra.servicio.empresa = "TUSDOMICILIOS.COM";
-	// 	Compra.servicio.valor = "CO$20.000";
-	// 	Compra.servicio.origen = $scope.origen;
-	// 	Compra.servicio.destino = $scope.destino;
-	// 	$location.url("/resumen");
-	// };
+	$scope.valor = service.valorService;
+	$scope.origen = service.origen;
+	$scope.destino = service.destino;
+	$scope.estado = service.estado;
 
-	var vm = this;
-	this.login = function(){
-		console.log('LOGIN XD');
+	// var vm = this;
+	$scope.login = function(){
 		$auth.login({
-			usuario: vm.usuario,
-			password: vm.password
+			usuario: $scope.usuario,
+			password: $scope.password
 		})
 		.then(function(data){
 			// si ha ingresado correctamente, lo tratamos aqui
 			// podemos tambien redigirle a una ruta
-			console.log('Tipo: '+ $scope.tipoPago);
-			Compra.servicio.tipoPago = $scope.tipoPago;
+			localStorageService.set('tipoPago',$scope.tipoPago);
+			localStorageService.set('idUser', data.data.userId);
 			$location.path('/resumen');
 		})
 		.catch(function(response){
@@ -210,16 +246,15 @@ app.controller('ServiceCrtl', ['$scope', 'Compra', '$location', '$auth', 'Empres
 	};
 
 		$scope.signup = function(){
-		console.log('REGISTRO XD');
 		$auth.signup({
 			usuario: $scope.usuario,
 			password: $scope.password
 		})
-		.then(function(){
+		.then(function(data){
 			//si ha sido registrado correctamente 
 			// redirigimos a otra parte
-			console.log('Tipo: '+ $scope.tipoPago);
-			Compra.servicio.tipoPago = $scope.tipoPago;
+			localStorageService.set('tipoPago',$scope.tipoPago);
+			localStorageService.set('idUser', data.data.userId);
 			$location.path('/resumen');
 		})
 		.catch(function(response){
@@ -229,8 +264,7 @@ app.controller('ServiceCrtl', ['$scope', 'Compra', '$location', '$auth', 'Empres
 	}
 
 	$scope.validarService = function(){
-		console.log('Tipo: '+ $scope.tipoPago);
-		Compra.servicio.tipoPago = $scope.tipoPago;
+		localStorageService.set('tipoPago',$scope.tipoPago);
 		$location.path('/resumen');
 	}
 
@@ -241,52 +275,63 @@ app.controller('ServiceCrtl', ['$scope', 'Compra', '$location', '$auth', 'Empres
 //Controlador para mostrar el resumen final del servico
 //y enviar el servicio para que sea procesado por la 
 //empresa seleccionada
-app.controller('ResumenCrtl', ['$scope', 'Compra', '$auth', '$location', 'Empresa', 'localStorageService', '$http', function($scope, Compra, $auth, $location, Empresa, localStorageService, $http){
+app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'localStorageService', '$http', 'Cuenta', function($scope, $auth, $location, Empresa, localStorageService, $http, Cuenta){
 	if (!$auth.isAuthenticated()) {
-	    console.log('no estas logueado');
 	    $location.url('/home');
     }else{
 
+    	// traigo los datos de la empresa
     	Empresa.getEmpresa()
 		.success(function(data){
-			console.log(data[0].nombreEmpresa);
 			$scope.empresa= data[0].nombreEmpresa;
 			
 		});
+
+		// traigo los datos del usuario
+		Cuenta.getProfile()
+			.success(function(data) {
+	          $scope.usuario = data;
+		});
+
+		var service = localStorageService.get('service');
+		var tipoPago = localStorageService.get('tipoPago');
 	   
 		$scope.titlePage = "Confirmación y envío del servicio";
-		$scope.tipoPago = Compra.servicio.tipoPago;
-		$scope.origen = Compra.servicio.origen;
-		$scope.destino = Compra.servicio.destino;
-		// $scope.empresa = Compra.servicio.empresa;
-		$scope.valor = Compra.servicio.valor;
-		$scope.estado = Compra.servicio.estado;
+		$scope.tipoPago = tipoPago;
+		$scope.origen = service.origen;
+		$scope.destino = service.destino;
+		$scope.valor = service.valorService;
+		$scope.estado = service.estado;
 
+		// preparo el servicio para enviarlo al server
 		var myService = {
 			userId: localStorageService.get('idUser'),
 			tipoDePago: $scope.tipoPago,
 			valorPedido: $scope.valor,
-			idEmpresa: localStorageService.get('idEmpresa'),
+			idEmpresa: service.idEmpresa,
 			estadoService: 'Esperando confirmacion',
 			dirOrigen: $scope.origen,
 			dirDestino: $scope.destino
 		}
 
+		$scope.ver = false;
+		// funcion para enviar el servicio al server
 		$scope.sendService = function(){
+			$scope.ver = true;
 			$http.post('http://localhost:8000/api/service', myService)
 			.success(function(data) {
-					//$scope.empresa = {}; // Borramos los datos del formulario
-					// $scope.empresas = data;
-					$scope.respuesta = "El registro fue éxitoso!";
-					console.log('Se guardo esto: '+ myService);
-				})
+				$scope.respuesta = "Su servicio se envío éxitosamente!";
+
+			})
 			.error(function(data) {
 				$scope.respuesta = "Error en el registro!";
 				console.log('Error: ' + data);
 			});
 		}
 
-		
+
+		// funcion para imprimir
+		// AUN NO ESTA TERMINADA
 		$scope.print = function(div){
 			var printContents = document.getElementById(div).innerHTML;
 		  	var popupWin = window.open('', '_blank', 'width=600,height=600');
@@ -320,7 +365,7 @@ app.controller('SignUpController', ['$scope', '$auth', '$location', 'localStorag
 }]);
 
 // para ingresar al sistema sesión user
-app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'localStorageService', '$alert', function($scope, $auth, $location, Compra, localStorageService, $alert){
+app.controller('LoginController', ['$scope', '$auth', '$location', 'localStorageService', '$alert', function($scope, $auth, $location, localStorageService, $alert){
 	var vm = this;
 
 	this.login = function(){
@@ -331,7 +376,7 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'lo
 		.then(function(data){
 			// si ha ingresado correctamente, lo tratamos aqui
 			// podemos tambien redigirle a una ruta
-			Compra.servicio.userLocal = vm.usuario;
+			// Compra.servicio.userLocal = vm.usuario;
 			console.log(data.data.userId);
 			localStorageService.set('idUser', data.data.userId);
 			$location.path('/home');
@@ -344,7 +389,6 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'Compra', 'lo
 	}
 
 	this.authenticate = function(provider) {
-		console.log('Aqui');
       $auth.authenticate(provider)
         .then(function(data) {
         	// console.log(data.data.userId);
@@ -380,8 +424,29 @@ app.controller('LogoutController', ['$scope', '$auth', '$location', 'localStorag
 		.then(function(){
 			// desconectamos al usuario
 			localStorageService.remove('idUser');
-			localStorageService.remove('idEmpresa');
+			localStorageService.remove('service');
+			localStorageService.remove('tipoPago');
 			$location.path('/');
 		});
 
 }]);
+
+
+
+// directiva para enviar la imagen al server
+// esto deberia estar en un archivo independiente, es solo que es mi primera directiva xD
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+ 
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}])

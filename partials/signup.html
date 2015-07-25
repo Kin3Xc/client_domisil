@@ -19,10 +19,10 @@
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 	<ul class="menu-home" ng-controller="HomeCtrl">
 	<li class="dropdown" ng-if="autenticar()">
-		<a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
 		<ul class="dropdown-menu">
             <li><a href="#/perfil">Perfil</a></li>
-            <li><a href="#">Historial de servicios</a></li>
+            <li><a href="">Historial de servicios</a></li>
             <!-- <li class="divider"></li> -->
             <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
         </ul>

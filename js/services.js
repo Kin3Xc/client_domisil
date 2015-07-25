@@ -15,10 +15,20 @@ app.factory('Cuenta', function($http, localStorageService) {
 app.factory('Empresa', function($http, localStorageService) {
     return {
       getEmpresa: function() {
-      	var id = localStorageService.get('idEmpresa');
-        return $http.get('http://localhost:8000/api/emp-domiciliarios/'+id);
+      	var service = localStorageService.get('service');
+        return $http.get('http://localhost:8000/api/emp-domiciliarios/'+service.idEmpresa);
       }
     };
+});
+
+// factoria que permite buscar los servicios asociados a un usuario
+app.factory('ServicioUser', function($http, localStorageService){
+	return {
+		getServiceUser: function(){
+			var id = localStorageService.get('idUser');
+			return $http.get('http://localhost:8000/api/user_service/'+id)
+		}
+	}
 });
 
 //Servicio que es inyectado en varios controladores para

@@ -4,6 +4,9 @@ body{
 	background-color: #ecf0f1;
 	color: #34495e;
 }
+.navbar-header button span{
+	background-color: #2980b9 !important;
+}
 .header{
 	background-color: #2980b9;
 	opacity: 0.8;
@@ -176,6 +179,27 @@ body{
 }
 .domisl{
 	margin-left: 10px;
+}
+.datos_perfil, .cambio_clave{
+	border: 1px #cbd0d3 dotted;
+	/*padding: 20px;*/
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+.title-perfil{
+	background-color: #95a5a6;
+	font-size: 1.3em;
+	color: #FFF;
+	padding: 4px;
+	margin: 0;
+	text-align: center;
+	/*margin-top: 10px;*/
+	margin-bottom: 20px;
+}
+.frm-perfil{
+	padding: 20px;
+	padding-top: 0;
 }
 
 .animate-show.ng-hide-add, 

@@ -27,51 +27,48 @@
 				<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
 				<ul class="dropdown-menu">
 		            <!-- <li><a href="#/perfil">Perfil</a></li> -->
-		            <li><a href="#/myservices">Historial de servicios</a></li>
+		            <li><a href="#/perfil">Mi cuenta</a></li>
 		            <!-- <li class="divider"></li> -->
 		            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
 		        </ul>
 			</li>
 		</ul>
-	</div>
+	</div>	
 </div>
 
-<div class="row" ng-controller="PerfilCtrl">
+
+<div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h3 class="panel-title">Mi cuenta</h3>
-			</div>
+			<div class="panel-heading"><h3 class="panel-title">Mis servicios</h3></div>
 			<div class="panel-body">
-				<div class="col-md-5 datos_perfil">
-					<h3 class="title-perfil">Editar cuenta</h3>
-					<form class="frm-perfil" role="form">
-						<div class="form-group">
-							<label class="form-label">Usuario</label>
-							<input type="text" class="form-control" value="{{user[0].usuario}}">
-						</div>
-						<button type="submit" class="btn btn-primary">Enviar</button>
-					</form>
+				<div class="services table-responsive">
+					<h1 ng-if="hayserives">No tiene servicios</h1>
+					<table class="table table-hover">
+						<thead >
+							<tr>
+								<th>#</th>
+								<th>Origen</th>
+								<th>Destino</th>
+								<th>Empresa</th>
+								<th>Pago</th>
+								<th>Valor</th>
+								<th>Estado</th>
+							</tr>
+						</thead>	
+						<tbody>
+							<tr ng-repeat="service in services | orderBy:'nombreEmpresa':'true'">
+								<td>{{$index + 1}}</td>
+								<td>{{service.dirOrigen}}</td>
+								<td>{{service.dirDestino}}</td>
+								<td>{{service.idEmpresa.nombreEmpresa}}</td>
+								<td>{{service.tipoDePago}}</td>
+								<td>{{service.valorPedido | currency : 'CO$' : 0}}</td>
+								<td>{{service.estadoService}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-					<div class="col-md-1"></div>
-
-					<div class="col-md-6 cambio_clave">
-						<h3 class="title-perfil">Cambiar clave</h3>
-						<form class="frm-perfil" role="form">
-							<div class="form-group">
-								<label class="form-label">Nueva contraseña</label>
-								<input class="form-control" type="password" placeholder="********">
-							</div>
-
-							<div class="form-group">
-								<label class="form-label">Repetir contraseña</label>
-								<input class="form-control" type="password" placeholder="********">
-							</div>
-							<button type="submit" class="btn btn-primary">Enviar</button>
-						</form>
-					</div>
-
-					<a href="#/myservices" >Mis últimos servicios</a>
 			</div>
 		</div>
 	</div>
