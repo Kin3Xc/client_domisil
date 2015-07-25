@@ -35,7 +35,8 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-10 col-md-10">
+	<div class"col-md-12">
+	<div class="col-md-6">
 		<div class="panel panel-success registro">
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Registro</h3>
@@ -44,7 +45,7 @@
 		       <form class="orm-horizontal" ng-submit="signup.signup()" method="post">
 		       		<div class="form-group">
 		       			<label class="control-label">Usuario</label>
-					    <div class="input-group col-md-4">
+					    <div class="input-group">
 					        <span class="input-group-addon mdi-social-person icon-text"></span>
 					        <input class="form-control" type="text" ng-model="signup.usuario">
 					    </div>
@@ -52,7 +53,7 @@
 
 		       		<div class="form-group">
 		       			<label class="control-label">Password</label>
-					    <div class="input-group col-md-4">
+					    <div class="input-group">
 					        <span class="input-group-addon mdi-navigation-apps icon-text"></span>
 					        <input class="form-control" type="password" ng-model="signup.password">
 					    </div>
@@ -62,5 +63,10 @@
 				</form>
 		    </div>
 		</div>
+	</div>
+	<div class="col-md-2"></div>
+	<div class="col-md-4">
+		<button href="#/registro" class="btn btn-warning btn-lg empresa-btn" ng-click="signup.ver_registro()">Soy una empresa</button>
+	</div>
 	</div>
 </div>

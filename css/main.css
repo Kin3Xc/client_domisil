@@ -11,6 +11,9 @@ body{
 	background-color: #2980b9;
 	opacity: 0.8;
 }
+#cotizar{
+	/*float: right;*/
+}
 .footer{
 	margin-top: 150px;
 	margin-bottom: 20px;
@@ -33,7 +36,7 @@ body{
 	width: 150px;
 	height: 90px;
 	border-radius: 10px;
-	margin-top: 12px;
+	/*margin-top: 12px;*/
 }
 .contenedor{
 	border: 1px #ecf0f1 dashed;
@@ -41,6 +44,9 @@ body{
 .contenedor div{
 	float: left;
 	margin-right: 8px;
+}
+.label-info{
+	font-size: 1em;
 }
 .resumen{
 	margin-top: 18px;
@@ -132,7 +138,7 @@ body{
 	margin-left: 1px;
 	margin-right: 1px;
 }
-.registro{
+.registro, .empresa-btn{
 	margin-top: 40px;
 }
 .icon-text{

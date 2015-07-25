@@ -126,6 +126,7 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 	  $http.get('http://localhost:8000/api/emp-domiciliarios').
 	  	success(function(data, status, headers, config){
 	  		$scope.empresas = data;
+	  		console.log(data[0].logoEmpresa);
 	  	});
 	};
 
@@ -361,6 +362,10 @@ app.controller('SignUpController', ['$scope', '$auth', '$location', 'localStorag
 			// si ha habido errors, llegaremos a esta función 
 			console.log('ERROR');
 		});
+	}
+
+	this.ver_registro = function(){
+		$location.path('/registro');
 	}
 }]);
 

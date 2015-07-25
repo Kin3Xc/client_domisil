@@ -49,7 +49,7 @@
 </div>
 
 <div class="row home" ng-controller="cotizadorController">
-	<div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
+	<div class="col-md-6">
 		<div class="panel panel-info" id="panel">
 
 		        <h1 class="titulo">DOMISIL</h1>
@@ -75,7 +75,7 @@
 				        </div>
 
 				        <div class="form-group">
-				            <div class="col-lg-10 col-lg-offset-2">
+				            <div class="col-lg-10">
 				            	<button type="submit" id="cotizar" class="btn btn-info" >Cotizar</button>
 				            </div>
 				        </div>
@@ -91,13 +91,13 @@
 	<div class=" mapa animate-show" id='map_canvas'>
 	</div>
 <!-- 	<div class=""></div> -->
-	<div class="animate-show col-lg-6 col-md-6 col-sm-6 col-xs-12 resultados" ng-show="ver">
+	<div class="animate-show  col-md-6 resultados" ng-show="ver">
 
 		<div class="panel panel-default panel-resultados">
 		    <div class="panel-heading">Resultados</div>
-		    <div class="panel-body contenedor" ng-repeat="empresa in empresas">
+		    <!-- <div class="panel-body contenedor" ng-repeat="empresa in empresas">
 		        <div class="proveedor">
-					<img class="foto-proveedor" src="img/img-proveedores/foto.jpg" alt="Empresa" >
+					<img class="foto-proveedor" ng-src="{{empresa.logoEmpresa}}" alt="Empresa" >
 				</div>
 				<div class="resumen">
 					<p><span class="item">Empresa:</span> {{empresa.nombreEmpresa}}</p>
@@ -106,7 +106,17 @@
 				<div class="btnComprar">
 					<button ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )" class="btn btn-success btnServicio">Pedir servicio</button>
 				</div>
-		    </div>
+		    </div> -->
+		    <table class="table">
+		    	<tr ng-repeat="empresa in empresas | orderBy:'tarifaKm'">
+		    		<td><img class="foto-proveedor" ng-src="{{empresa.logoEmpresa}}" alt="Empresa" ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )"></td>
+		    		<td class="resumen">
+		    			<p><span class="item">Empresa:</span> {{empresa.nombreEmpresa}}</p>
+						<p><span class="item">Precio:</span> <span class="label label-info">{{empresa.tarifaKm * distancia | currency : 'CO$' : 0}}</span></p>
+		    		</td>
+		    		<td class="btnComprar"><button ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )" class="btn btn-success btnServicio">Pedir servicio</button></td>
+		    	</tr>
+		    </table>
 		</div>
 	</div>
 </div>
