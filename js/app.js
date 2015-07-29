@@ -9,8 +9,8 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 	$authProvider.withCredentials = false; // Send POST request with credentials
 
 	// parametros de configuracion
-	$authProvider.loginUrl = "http://localhost:8000/auth/login";
-	$authProvider.signupUrl = "http://localhost:8000/auth/signup";
+	$authProvider.loginUrl = "https://api-domi.herokuapp.com/auth/login";
+	$authProvider.signupUrl = "https://api-domi.herokuapp.com/auth/signup";
 
 	$authProvider.tokenName = "token";
 	$authProvider.tokenPrefix = "Domisil_App";
@@ -93,7 +93,8 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 		$urlRouterProvider.otherwise('/');
 
 		$authProvider.facebook({
-	      clientId: '104801699865242'
+	      // clientId: '104801699865242' //ID test
+	      clientId: '104799146532164' //ID Production
 	    });
 });
 

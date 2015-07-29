@@ -45,7 +45,7 @@
         },
         facebook: {
           name: 'facebook',
-          url: 'http://localhost:8000/auth/facebook',
+          url: 'https://api-domi.herokuapp.com/auth/facebook',
           authorizationEndpoint: 'https://www.facebook.com/v2.3/dialog/oauth',
           redirectUri: (window.location.origin || window.location.protocol + '//' + window.location.host) + '/',
           scope: ['email'],

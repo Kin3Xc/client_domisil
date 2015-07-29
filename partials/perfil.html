@@ -24,7 +24,7 @@
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 		<ul class="menu-home" ng-controller="HomeCtrl">
 			<li class="dropdown" ng-if="autenticar()">
-				<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+				<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].nombre}}<b class="caret"></b></a>
 				<ul class="dropdown-menu">
 		            <!-- <li><a href="#/perfil">Perfil</a></li> -->
 		            <li><a href="#/myservices">Historial de servicios</a></li>
@@ -48,9 +48,23 @@
 					<form class="frm-perfil" role="form">
 						<div class="form-group">
 							<label class="form-label">Usuario</label>
-							<input type="text" class="form-control" value="{{user[0].usuario}}">
+							<input type="text" class="form-control" ng-model="usuario">
 						</div>
-						<button type="submit" class="btn btn-primary">Enviar</button>
+
+						<div class="form-group">
+							<label class="form-label">Nombre</label>
+							<input type="text" class="form-control" ng-model="nombre">
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Email</label>
+							<input type="text" class="form-control" ng-model="email">
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Teléfono</label>
+							<input type="text" class="form-control" ng-model="telefono">
+						</div>
 					</form>
 				</div>
 					<div class="col-md-1"></div>
@@ -65,14 +79,13 @@
 
 							<div class="form-group">
 								<label class="form-label">Repetir contraseña</label>
-								<input class="form-control" type="password" placeholder="********">
+								<input ng-model="password" class="form-control" type="password" placeholder="********">
 							</div>
-							<button type="submit" class="btn btn-primary">Enviar</button>
+							<button type="button" ng-click="editPerfile()" class="btn btn-primary">Guardar cambios</button>
 						</form>
 					</div>
-
-					<a href="#/myservices" >Mis últimos servicios</a>
 			</div>
+					<a href="#/myservices" >Mis últimos servicios</a>
 		</div>
 	</div>
 </div>

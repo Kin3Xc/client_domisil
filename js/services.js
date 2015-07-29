@@ -6,7 +6,11 @@ app.factory('Cuenta', function($http, localStorageService) {
     return {
       getProfile: function() {
       	var id = localStorageService.get('idUser');
-        return $http.get('http://localhost:8000/api/users/'+id);
+      	if (id != null) {
+        	return $http.get('https://api-domi.herokuapp.com/api/users/'+id);      		
+      	}else{
+        	return $http.get('https://api-domi.herokuapp.com/api/users');
+      	}
       }
     };
 });
@@ -16,7 +20,13 @@ app.factory('Empresa', function($http, localStorageService) {
     return {
       getEmpresa: function() {
       	var service = localStorageService.get('service');
-        return $http.get('http://localhost:8000/api/emp-domiciliarios/'+service.idEmpresa);
+      	if(service != null){
+        	return $http.get('https://api-domi.herokuapp.com/api/emp-domiciliarios/'+service.idEmpresa);
+      		
+      	}else{	
+       		return $http.get('https://api-domi.herokuapp.com/api/emp-domiciliarios');
+      		
+      	}
       }
     };
 });
@@ -26,7 +36,11 @@ app.factory('ServicioUser', function($http, localStorageService){
 	return {
 		getServiceUser: function(){
 			var id = localStorageService.get('idUser');
-			return $http.get('http://localhost:8000/api/user_service/'+id)
+			if(id != null){
+				return $http.get('https://api-domi.herokuapp.com/api/user_service/'+id)
+			}else{
+				return $http.get('https://api-domi.herokuapp.com/api/user_service')
+			}
 		}
 	}
 });

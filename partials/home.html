@@ -33,7 +33,7 @@
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 	<ul class="menu-home" ng-controller="HomeCtrl">
 	<li class="dropdown" ng-if="autenticar()">
-		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].nombre}}<b class="caret"></b></a>
 		<ul class="dropdown-menu">
             <li><a href="#/perfil">Mi cuenta</a></li>
             <li><a href="#/myservices">Historial de servicios</a></li>
@@ -109,7 +109,7 @@
 		    </div> -->
 		    <table class="table">
 		    	<tr ng-repeat="empresa in empresas | orderBy:'tarifaKm'">
-		    		<td><img class="foto-proveedor" ng-src="{{empresa.logoEmpresa}}" alt="Empresa" ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )"></td>
+		    		<td><img class="foto-proveedor" ng-src="uploads/{{empresa.logoEmpresa}}" alt="Empresa" ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )"></td>
 		    		<td class="resumen">
 		    			<p><span class="item">Empresa:</span> {{empresa.nombreEmpresa}}</p>
 						<p><span class="item">Precio:</span> <span class="label label-info">{{empresa.tarifaKm * distancia | currency : 'CO$' : 0}}</span></p>

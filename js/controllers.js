@@ -3,26 +3,46 @@ var app = angular.module('domisilapp.controllers', ['ui.router', 'ngAnimate', 's
 
 // home '/' controller
 app.controller('HomeCtrl', ['$scope', 'localStorageService','Cuenta', '$auth', function($scope, localStorageService, Cuenta, $auth){
-	var local = localStorageService.get('idUser');
-	if (local != "") {
-		Cuenta.getProfile()
-			.success(function(data) {
-	          $scope.user = data;
-	          // console.log($scope.user[0].usuario);
-	        });
-	}
+	Cuenta.getProfile()
+		.success(function(data) {
+          $scope.user = data;
+          // console.log($scope.user[0].usuario);
+    	});
+
 	$scope.autenticar = function() {
       return $auth.isAuthenticated();
     };
 }]);
 
 // controlador para la administración de la cuenta de usuario
-app.controller('PerfilCtrl',['$scope', 'Cuenta', function($scope, Cuenta){
+app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService', function($scope, Cuenta, $http, localStorageService){
 	// cargo los datos del usuario
 	Cuenta.getProfile()
 		.success(function(data) {
-          $scope.user = data;
+          // $scope.user = data;
+          $scope.usuario = data[0].usuario;
+          $scope.nombre = data[0].nombre;
+          $scope.email = data[0].email;
+          $scope.telefono = data[0].telefono;
         });
+
+    $scope.editPerfile = function(){
+    	var user = {
+    		usuario: $scope.usuario,
+    		password: $scope.password,
+    		nombre: $scope.nombre,
+    		email: $scope.email,
+    		telefono: $scope.telefono
+    	};
+    console.log(user);
+
+    var id = localStorageService.get('idUser');
+    $http.put('https://api-domi.herokuapp.com/api/users/'+id, user)
+    	.success(function(data){
+    		console.log(data);
+    	});
+    };
+
 }]);
 
 // controlador para la gestion y control de servicios realizados por el usuario
@@ -123,10 +143,9 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 
 		//Peticion get a la API para traer todas las epmresas y sus tarifas 
 	  $http.defaults.headers.common["X-Custom-Header"] = "Angular.js";
-	  $http.get('http://localhost:8000/api/emp-domiciliarios').
+	  $http.get('https://api-domi.herokuapp.com/api/emp-domiciliarios').
 	  	success(function(data, status, headers, config){
 	  		$scope.empresas = data;
-	  		console.log(data[0].logoEmpresa);
 	  	});
 	};
 
@@ -156,7 +175,7 @@ app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
 	$scope.empresa = {};
 	$scope.registrarEmpresa = function(){
 		// console.log('Logo: '+$scope.empresa.logoEmpresa);
-		// $http.post('http://localhost:8000/api/emp-domiciliarios', $scope.empresa)
+		// $http.post('https://api-domi.herokuapp.com/api/emp-domiciliarios', $scope.empresa)
 		// 	.success(function(data) {
 		// 		//$scope.empresa = {}; // Borramos los datos del formulario
 		// 		$scope.empresas = data;
@@ -177,23 +196,38 @@ app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
         fd.append('email', $scope.email);
         fd.append('logoEmpresa', file);
 
-        console.log(fd);
-        $http.post('http://localhost:8000/api/emp-domiciliarios', fd, {
+        // console.log(fd);
+        $http.post('https://api-domi.herokuapp.com/api/emp-domiciliarios', fd, {
             transformRequest: angular.identity, 
             headers: {'Content-Type': undefined}
             })
             .success(function(response){
                 //Guardamos la url de la imagen y hacemos que la muestre.
-                // $scope.empresa.logoEmpresa = response;
+                fd.append('nombre', response.data.logoEmpresa);
+				console.log('Logo: '+response.data.logoEmpresa);
+				// var pathimg = response.data.logoEmpresa;
+                upload(fd);
                 $scope.img=true;
                 // $scope.empresas = data;
 				$scope.respuesta = "El registro fue éxitoso!";
-				console.log(response);
             })
             .error(function(response){
 
         });
 	};
+
+	function upload (form) {
+		$http.post('http://domisil.co/uploads.php',form, {
+		    transformRequest: angular.identity, 
+            headers: {'Content-Type': undefined}
+            })
+            .success(function(response){
+				console.log('Respuesta: '+response);
+            })
+            .error(function(response){
+        });
+	};
+
 }]);
 //Fin controller empresa
 
@@ -248,6 +282,9 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 
 		$scope.signup = function(){
 		$auth.signup({
+			nombre: $scope.nombre,
+			email: $scope.email,
+			telefono: $scope.telefono,
 			usuario: $scope.usuario,
 			password: $scope.password
 		})
@@ -289,10 +326,12 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 		});
 
 		// traigo los datos del usuario
+		
 		Cuenta.getProfile()
 			.success(function(data) {
 	          $scope.usuario = data;
-		});
+	        });
+	    
 
 		var service = localStorageService.get('service');
 		var tipoPago = localStorageService.get('tipoPago');
@@ -319,7 +358,7 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 		// funcion para enviar el servicio al server
 		$scope.sendService = function(){
 			$scope.ver = true;
-			$http.post('http://localhost:8000/api/service', myService)
+			$http.post('https://api-domi.herokuapp.com/api/service', myService)
 			.success(function(data) {
 				$scope.respuesta = "Su servicio se envío éxitosamente!";
 
@@ -348,6 +387,9 @@ app.controller('SignUpController', ['$scope', '$auth', '$location', 'localStorag
 	var vm = this;
 	this.signup = function(){
 		$auth.signup({
+			nombre: vm.nombre,
+			email: vm.email,
+			telefono: vm.telefono,
 			usuario: vm.usuario,
 			password: vm.password
 		})
@@ -374,6 +416,7 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'localStorage
 	var vm = this;
 
 	this.login = function(){
+		console.log(vm.password);
 		$auth.login({
 			usuario: vm.usuario,
 			password: vm.password
@@ -389,6 +432,9 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'localStorage
 		.catch(function(response){
 			// si ha habido errores 
 			console.log(response.data.message);
+			console.log(response.data.result);
+			console.log(response.data.pwd);
+			console.log(response.data.llega);
 		});
 
 	}
@@ -435,8 +481,6 @@ app.controller('LogoutController', ['$scope', '$auth', '$location', 'localStorag
 		});
 
 }]);
-
-
 
 // directiva para enviar la imagen al server
 // esto deberia estar en un archivo independiente, es solo que es mi primera directiva xD

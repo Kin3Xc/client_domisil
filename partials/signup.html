@@ -19,7 +19,7 @@
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 	<ul class="menu-home" ng-controller="HomeCtrl">
 	<li class="dropdown" ng-if="autenticar()">
-		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].usuario}}<b class="caret"></b></a>
+		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].nombre}}<b class="caret"></b></a>
 		<ul class="dropdown-menu">
             <li><a href="#/perfil">Perfil</a></li>
             <li><a href="">Historial de servicios</a></li>
@@ -43,6 +43,30 @@
 		    </div>
 		    <div class="panel-body">
 		       <form class="orm-horizontal" ng-submit="signup.signup()" method="post">
+		       		<div class="form-group">
+		       			<label class="control-label">Nombre</label>
+		       			<div class="input-group">
+		       				<span class="input-group-addon mdi-navigaton-apps icon-text"></span>
+		       				<input class="form-control" type="text" ng-model="signup.nombre" />
+		       			</div>
+		       		</div>	
+
+		       		<div class="form-group">
+		       			<label class="control-label">Email</label>
+		       			<div class="input-group">
+		       				<span class="input-group-addon mdi-navigaton-apps icon-text"></span>
+		       				<input class="form-control" type="email" ng-model="signup.email" />
+		       			</div>
+		       		</div>
+
+		       		<div class="form-group">
+		       			<label class="control-label">Teléfono</label>
+		       			<div class="input-group">
+		       				<span class="input-group-addon mdi-navigaton-apps icon-text"></span>
+		       				<input class="form-control" type="text" ng-model="signup.telefono" />
+		       			</div>
+		       		</div>
+
 		       		<div class="form-group">
 		       			<label class="control-label">Usuario</label>
 					    <div class="input-group">
