@@ -14,6 +14,15 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	    <a class="navbar-brand domisil" href="#/home">Domisil Web</a>
+
+	   	<div class="menu-movil" ng-controller="HomeCtrl">
+	    	<a ng-if="autenticar()" href="#/perfil">Perfil</a>
+	    	<a ng-if="autenticar()" href="#/myservices">Servicios</a>
+	    	<a ng-if="autenticar()" href="#/logout">Cerrar sesión</a>
+
+	    	<a ng-if="!autenticar()" href="#/login">Ingresar</a>
+			<a ng-if="!autenticar()" href="#/signup">Registrar</a>
+	    </div>
 	</div>
 	
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -28,7 +37,7 @@
         </ul>
 	</li>
 	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
-	<li ng-if="!autenticar()" >|</li>
+	<!-- <li ng-if="!autenticar()" >|</li> -->
 	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
 	</ul>
 	</div>

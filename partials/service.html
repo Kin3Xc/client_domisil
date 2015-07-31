@@ -19,6 +19,15 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	    <a class="navbar-brand domisil" href="#/home">Domisil Web</a>
+
+	   	<div class="menu-movil" ng-controller="HomeCtrl">
+	    	<a ng-if="autenticar()" href="#/perfil">Perfil</a>
+	    	<a ng-if="autenticar()" href="#/myservices">Servicios</a>
+	    	<a ng-if="autenticar()" href="#/logout">Cerrar sesión</a>
+
+	    	<a ng-if="!autenticar()" href="#/login">Ingresar</a>
+			<a ng-if="!autenticar()" href="#/signup">Registrar</a>
+	    </div>
 	</div>
 	
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -33,7 +42,7 @@
         </ul>
 	</li>
 	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
-	<li ng-if="!autenticar()" >|</li>
+	<!-- <li ng-if="!autenticar()" >|</li> -->
 	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
 	</ul>
 	</div>
@@ -88,29 +97,20 @@
 					    <div class="panel-body">
 					        <form ng-submit="login()" method="post">
 					        	<div class="form-group">
-								    <label class="control-label" for="user">Nombre</label>
-								    <input ng-model="nombre" type="text" class="form-control">
-								</div>
-								<div class="form-group">
-								    <label class="control-label" for="user">Email</label>
-								    <input ng-model="email" type="email" class="form-control">
-								</div>
-								<div class="form-group">
-								    <label class="control-label" for="user">Teléfono</label>
-								    <input ng-model="telefono" type="text" class="form-control">
-								</div>
-					        	<div class="form-group">
 								    <label class="control-label" for="user">Usuario</label>
 								    <input ng-model="usuario" type="text" class="form-control" id="user">
 								</div>
 								<div class="form-group">
-								    <label class="control-label" for="pwd">Usuario</label>
+								    <label class="control-label" for="pwd">Password</label>
 								    <input ng-model="password" type="password" class="form-control" id="pwd">
 								</div>
 								<button type="submit" class="btn btn-primary">Ingresar</button>
 					        </form>
 					    </div>
 					</div>
+					<button class="btn btn-block btn-info" ng-click="loginFace('facebook')">
+     					<i class=""></i>Iniciar sesión usando Facebook
+        			</button>
 		       </div>
 		        <div class="col-md-7">
 			       	<div class="panel panel-default">

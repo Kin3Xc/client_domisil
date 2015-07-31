@@ -51,7 +51,17 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			url: '/service',
 			templateUrl: 'partials/service.html',
 			controller: 'ServiceCrtl',
-			controllerAs: 'login'
+			controllerAs: 'login',
+			authenticated: function($q, $location, $auth) {
+	            var deferred = $q.defer();
+
+	            if (!$auth.isAuthenticated()) {
+	              $location.path('/login');
+	            } else {
+	              deferred.resolve();
+	            }
+	            return deferred.promise;
+	        }
 		})
 
 		.state('myservices',{
@@ -63,8 +73,20 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 		.state('resumen',{
 			url:'/resumen',
 			templateUrl: 'partials/resumen.html',
-			controller: 'ResumenCrtl'
+			controller: 'ResumenCrtl',
+
+			authenticated: function($q, $location, $auth) {
+	            var deferred = $q.defer();
+
+	            if (!$auth.isAuthenticated()) {
+		              $location.path('/login');
+		            } else {
+		              deferred.resolve();
+		            }
+		            return deferred.promise;
+	        }
 		})
+
 		.state('login', {
 			url:'/login',
 			templateUrl: 'partials/login.html',

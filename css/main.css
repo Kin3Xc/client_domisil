@@ -168,7 +168,17 @@ body{
 	list-style: none;	
 	float: left;
 	margin: 0;
+	text-decoration: none;
 	padding: 4px !important;
+}
+.menu-home li a {
+	padding: 9px !important;
+	/*background-color: rgba(123,120,120,0.1);*/
+}
+.menu-home li a:hover{
+	text-decoration: none;
+	font-style: none;
+	background-color: rgba(123,120,120,0.2);
 }
 .menu-footer{
 	float:left;
@@ -229,3 +239,28 @@ body{
 
 }
 
+.menu-movil{
+	float: right;
+	display: none;
+}
+
+
+@media screen and (max-width: 767px){
+	.navbar-toggle{
+		display: none !important;
+	}
+	.menu-movil{
+		display: block;
+	}
+	.menu-movil a{
+		list-style: none;
+		font-size: 14px;
+		margin: 5px;
+		padding: 9px !important;
+		text-decoration: none;
+	}
+	.menu-movil a:hover{
+		font-style: none;
+		background-color: rgba(0,0,0,0.1);
+	}
+}

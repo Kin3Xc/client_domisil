@@ -11,7 +11,7 @@
       httpInterceptor: true,
       loginOnSignup: true,
       baseUrl: '/',
-      loginRedirect: '/',
+      loginRedirect: '/resumen',
       logoutRedirect: '/',
       signupRedirect: '/login',
       loginUrl: '/auth/login',

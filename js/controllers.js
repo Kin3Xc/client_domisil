@@ -280,7 +280,7 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 
 	};
 
-		$scope.signup = function(){
+	$scope.signup = function(){
 		$auth.signup({
 			nombre: $scope.nombre,
 			email: $scope.email,
@@ -301,6 +301,38 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 		});
 	}
 
+	// login facebook
+	$scope.loginFace = function(provider) {
+		app.config(function($authProvider){
+			$authProvider.loginRedirect = '/resumen';
+			$authProvider.baseUrl = '/resumen';
+		});
+		// defino ruta para retornar si el login es éxitoso
+
+    	$auth.authenticate(provider)
+	        .then(function(data) {
+	          // console.log(data.data.userId);
+			localStorageService.set('idUser', data.data.userId);//almaceno el id del usuario en el localstorage
+			localStorageService.set('tipoPago',$scope.tipoPago);
+	          // $alert({
+	          //   content: 'You have successfully logged in',
+	          //   animation: 'fadeZoomFadeDown',
+	          //   type: 'material',
+	          //   duration: 3
+	          // });
+        })
+        .catch(function(response) {
+        	// console.log('Error');
+        	console.log(response);
+          $alert({
+            content: response.data,
+            animation: 'fadeZoomFadeDown',
+            type: 'material',
+            duration: 3
+          });
+        });
+    };
+
 	$scope.validarService = function(){
 		localStorageService.set('tipoPago',$scope.tipoPago);
 		$location.path('/resumen');
@@ -317,6 +349,12 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 	if (!$auth.isAuthenticated()) {
 	    $location.url('/home');
     }else{
+
+
+    	// si no existe un servicio lo redirijo al home de la pagina
+    	if (localStorageService.get('service') == null) {
+    		$location.url('/home');
+    	}else{
 
     	// traigo los datos de la empresa
     	Empresa.getEmpresa()
@@ -379,6 +417,7 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 		  	popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="css/main.css" /></head><body onload="window.print()">' + printContents + '</html>');
 		  	popupWin.document.close();
 		};
+		}
 	}
 }]);
 
@@ -430,7 +469,7 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'localStorage
 			$location.path('/home');
 		})
 		.catch(function(response){
-			// si ha habido errores 
+			// si ha habido errores
 			console.log(response.data.message);
 			console.log(response.data.result);
 			console.log(response.data.pwd);
@@ -444,6 +483,9 @@ app.controller('LoginController', ['$scope', '$auth', '$location', 'localStorage
         .then(function(data) {
         	// console.log(data.data.userId);
 			localStorageService.set('idUser', data.data.userId);//almaceno el id del usuario en el localstorage
+			console.log(data);
+			console.log(data.data.message);
+
           // $alert({
           //   content: 'You have successfully logged in',
           //   animation: 'fadeZoomFadeDown',
