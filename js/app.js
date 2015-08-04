@@ -110,6 +110,16 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			templateUrl: 'partials/private.html',
 			controller: 'PrivateController',
 			controllerAs: 'private'
+		})
+
+		.state('funciona', {
+			url: '/funciona',
+			templateUrl: 'partials/funciona.html'
+		})
+
+		.state('nosotros', {
+			url: '/nosotros',
+			templateUrl: 'partials/nosotros.html'
 		});
 
 		$urlRouterProvider.otherwise('/');

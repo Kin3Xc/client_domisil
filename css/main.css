@@ -1,9 +1,21 @@
 body{
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-	background-color: #ecf0f1;
-	color: #34495e;
+	/*background-color: #ecf0f1;*/
+	background: url(../public/img/header.jpg) no-repeat;
+	color: #34495e !important;
 }
+.domisil{
+	color: #FFF !important;
+	text-align: center;
+	background-color: rgba(123,120,120,0.2);
+}
+.domisil:hover{
+	background-color: rgba(0,0,0,0.5);
+}
+.option{
+	margin-bottom: 18px;
+}span
 .navbar-header button span{
 	background-color: #2980b9 !important;
 }
@@ -12,22 +24,25 @@ body{
 	opacity: 0.8;
 }
 #cotizar{
-	/*float: right;*/
+	margin-left: 28px;
+}
+.btn-cotizar{
+	margin-top: 18px;
 }
 .footer{
-	margin-top: 150px;
-	margin-bottom: 20px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 .buscarServicio{
 	background-color: #FFF;
 }
-.mapa{
+/*.mapa{
 	border: 1px #bdc3c7 dashed;
 	border-radius: 10px;
 	margin-bottom:20px;
 	height: 260px;
 	display: none;
-}
+}*/
 .resultados{
 	margin-top: 10px;
 	font-size: 0.8em;
@@ -71,7 +86,7 @@ body{
 	font-weight: bold;
 	padding: 0;
 	margin: 0;
-	text-shadow: 1px 2px 1px #FFF;
+	text-shadow: 1px 2px 1px #2980b9;
 }
 .tagLine{
 	text-align: center;
@@ -81,9 +96,17 @@ body{
 	padding-top: 10px;
 	font-size: 30px;
 }
-.domisil{
+.logo-inicio{
 	margin: 0;
 	padding: 0;
+}
+.logo-inicio a{
+	font-size: 1.8em;
+	color: #FFF !important;
+	/*color: #2980b9 !important;*/
+	font-weight: bold !important;
+	padding-top:10px !important;
+	margin-top: 10px !important;
 }
 .domicilio{
 	font-size: 220px;
@@ -105,10 +128,21 @@ body{
 }
 
 #panel{
-	margin-top: 20px;
+	margin-top: 5px;
 	padding: 10px;
 	border-radius: 10px;
+	background-color: rgba(225,225,225,0.9);
 	/*margin-right: 20px;*/
+}
+.panel{
+	/*margin-bottom: 0 !important;*/
+}
+.form-group{
+	/*margin: 0;
+	padding: 0;*/
+}
+.panel-body{
+	/*padding-bottom: 0;*/
 }
 .frm-login{
 	padding: 10px;
@@ -120,6 +154,13 @@ body{
 }
 #destino-icon{
 	color: #e74c3c;
+}
+/*#city-icon{
+	color: #d35400;
+}*/
+#tipo-icon, #city-icon{
+	color: #3498db;
+	/*padding: 0;*/
 }
 #panel, #domisil, #login{
 	opacity: 0;
@@ -173,7 +214,8 @@ body{
 }
 .menu-home li a {
 	padding: 9px !important;
-	/*background-color: rgba(123,120,120,0.1);*/
+	background-color: rgba(0,0,0,0.5);
+	color: #FFF !important;
 }
 .menu-home li a:hover{
 	text-decoration: none;
@@ -192,6 +234,16 @@ body{
 	float: left;
 	margin: 0;
 	padding: 4px;
+}
+.menu-footer li a{
+	padding: 9px !important;
+	background-color: rgba(0,0,0,0.5);
+	color: #FFF !important;
+}
+.menu-footer li a:hover{
+	text-decoration: none;
+	font-style: none;
+	background-color: rgba(123,120,120,0.2);
 }
 .domisl{
 	margin-left: 10px;
@@ -244,6 +296,21 @@ body{
 	display: none;
 }
 
+.dropdown-menu li a{
+	color: #2980b9 !important;
+	background-color: transparent !important;
+	/*padding: 0;
+	margin: 0;*/
+}
+.dropdown-menu li a:hover {
+	background-color: rgba(0,0,0,0.1) !important;
+}
+
+/*.img1{
+	float: right;
+	text-align: center;
+}*/
+
 
 @media screen and (max-width: 767px){
 	.navbar-toggle{
@@ -256,11 +323,17 @@ body{
 		list-style: none;
 		font-size: 14px;
 		margin: 5px;
-		padding: 9px !important;
 		text-decoration: none;
+
+		padding: 9px !important;
+		background-color: rgba(0,0,0,0.5);
+		color: #FFF !important;
 	}
 	.menu-movil a:hover{
 		font-style: none;
-		background-color: rgba(0,0,0,0.1);
+		/*background-color: rgba(0,0,0,0.1);*/
+		text-decoration: none;
+		background-color: rgba(123,120,120,0.2);
+
 	}
 }

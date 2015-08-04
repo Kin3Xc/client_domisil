@@ -27,9 +27,9 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
 	    </button>
-	    
-	    <a class="navbar-brand domisil" href="#/home">Domisil Web</a>
-
+	    <div class="logo-inicio">
+	    	<a class="navbar-brand domisil" href="#/home">Domisil</a>
+		</div>
 	    <div class="menu-movil" ng-controller="HomeCtrl">
 	    	<a ng-if="autenticar()" href="#/perfil">Perfil</a>
 	    	<a ng-if="autenticar()" href="#/myservices">Servicios</a>
@@ -68,11 +68,35 @@
 		    <div class="panel-body">
 		       <form role="form" ng-submit="mostrarInfo()" class="form-horizontal formulario" >
 			       	<fieldset>
+			       		<!-- <div class="col-lg-12 option"> -->
+			       		<div class="form-group">
+			       			<label for="select" class="control-label">Tipo de envío</label>
+			       			<div class=" input-group col-lg-6">
+			       				<span class="input-group-addon mdi-maps-local-shipping icon-text" id="tipo-icon"></span>
+				       			<select class="form-control" id="select" ng-model="tipoServicio" ng-change="otroServicio()" required title="Seleccione un tipo de envío">
+				       				<option style="display:none" value="">Seleccione</option>
+				                    <option value="Sobre">Sobre</option>
+				                    <option value="Paquete">Paquete</option>
+				                    <option value="Otro">Otro</option>
+			                	</select>
+			                	<!-- {{tipoServicio}} -->
+		                	</div>
+			       		</div>
+			       		<!-- <div class="col-lg-2"></div> -->
+			       		<div class="form-group " ng-show="ver_otro">
+			       			<label for="otro" class="control-label">Descripción del servicio</label>
+			       			<div class=" input-group col-lg-10">
+			       				<span class="input-group-addon mdi-action-home icon-text" id="city-icon"></span>
+			       				<input ng-model="otro" type="text" class="form-control" id="otro" />
+		                	</div>
+			       		</div>
+
+			       		<!-- </div> -->
 				        <div class="form-group">
 				            <label for="origen" class="control-label">Origen</label>
 				            <div class="col-lg-10 input-group">
 				            	<span class="input-group-addon mdi-maps-place icon-text" id="origen-icon"></span>
-				                <input ng-model="origen" type="text" class="form-control" id="origen" name="origen" autofocus required />
+				                <input ng-model="origen" type="text" class="form-control" id="origen" name="origen" required />
 				            </div>
 				        </div>
 
@@ -85,13 +109,13 @@
 				        </div>
 
 				        <div class="form-group">
-				            <div class="col-lg-10">
+				            <div class="col-lg-10 btn-cotizar">
 				            	<button type="submit" id="cotizar" class="btn btn-info" >Cotizar</button>
 				            </div>
 				        </div>
 				        <div class="alert alert-dismissable alert-success" ng-show="ver">
 						    <button type="button" class="close" data-dismiss="alert">×</button>
-						    <strong>Distancia: {{distancia}} </strong> 
+						    <strong>Distancia: {{distancia}} Km </strong> 
 						</div>
 			       	</fieldset>
 		       </form>
@@ -124,7 +148,7 @@
 		    			<p><span class="item">Empresa:</span> {{empresa.nombreEmpresa}}</p>
 						<p><span class="item">Precio:</span> <span class="label label-info">{{empresa.tarifaKm * distancia | currency : 'CO$' : 0}}</span></p>
 		    		</td>
-		    		<td class="btnComprar"><button ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia )" class="btn btn-success btnServicio">Pedir servicio</button></td>
+		    		<td class="btnComprar"><button ng-click="servicioSeleccionado(empresa._id, empresa.tarifaKm * distancia, tipoServicio)" class="btn btn-success btnServicio">Pedir servicio</button></td>
 		    	</tr>
 		    </table>
 		</div>

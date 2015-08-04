@@ -38,42 +38,28 @@
 </div>
 
 
-<div class="row" ng-controller="ResumenCrtl">
+<div class="row">
 	<!-- <div class="col-md-12"> -->
 		<!-- <h2>{{titlePage}}</h2> -->
 		<div class="panel panel-info" id="print">
-			<div class="panel-heading">
-				<h3 class="panel-title">Resumen del servicio</h3>
-			</div>	
-			
+			<!-- <div class="panel-heading">
+				<h3 class="panel-title">Cómo funciona Domisil</h3>
+			</div>	 -->
 			<div class="panel-body">
-				<div class="col-md-6">
-					<p><span class="item">Tipo de envío: </span>{{tipo}}</p>
-					<!-- <p><span class="item">Ciudad: </span>{{ciudad}}</p> -->
-					<p><span class="item">Tipo de pago: </span>{{tipoPago}}</p>
-					<p><span class="item">Origen: </span>{{origen}}</p>
-			    	<p><span class="item">Destino: </span>{{destino}}</p>
-					<p><span class="item">Empresa: </span>{{empresa}}</p>
-			    	<p><span class="item">Valor: </span>{{valor | currency : 'CO$' : 0}}</p>
-			    	<p><span class="item">Usuario: </span>{{usuario[0].usuario}}</p>
-		    	</div>
+				<div class="col-md-10">
+					<h1>Cómo funciona</h1>
+					<p>Domisil es una plataforma que permite cotizar servicios de envío de cualquier tipo de paquete a nivel nacional, el usuario tendrá una lista de opciones en donde podrá selccionar la opción que mas se acomode a sus necesidades.</p>
 
-		    	<div class="col-md-6">
-					<div class="form-group">
-						<label class="label-control">Agregar comentario</label>
-						<textarea class="form-control" ng-model="comentario" cols="6" rows="5" placeholder="Ingrese un comentario para su servicio"></textarea>
+					<div class="img1">
+						<h4>1. Para iniciar selecciona el tipo de envío que deseas relaizar</h4>
+						<img src="public/img/n1.png">
+					</div>
+					<div class="img2">
+						<h4>2. Luego selecciona el lugar de origen y el destino de tu envío</h4>
+						<img src="public/img/n2.png">
 					</div>
 				</div>
-				
-				<button class="btn btn-primary" ng-click="sendService()">Enviar servicio</button>
-				<button ng-click="print('print')" class="btn btn-primary">Imprimir</button>
 			</div>
-		</div>
-
-		<div class="alert alert-dismissable alert-success" ng-show="ver">
-		    <button type="button" class="close" data-dismiss="alert">×</button>
-		    <strong>{{respuesta}} </strong> 
-		</div>
-		
+		</div>	
 	<!-- </div> -->
 </div>

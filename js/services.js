@@ -67,12 +67,14 @@ app.factory('geolocation', function(){
 		directionsDisplay = new google.maps.DirectionsRenderer();
 
 		var options = {
-		  componentRestrictions: {country: 'CO'}
+			// types: ['(geocode)'],
+		  	componentRestrictions: {country: 'CO'}
 		};
 
 		var Origen = new google.maps.places.Autocomplete((document.getElementById('origen')),options);
 		google.maps.event.addListener(Origen, 'place_changed', function() {
 			var place = Origen.getPlace();
+			console.log(place);
 			originLatLon = place.geometry.location;
 			console.log(originLatLon);
 		});

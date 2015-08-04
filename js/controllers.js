@@ -46,7 +46,7 @@ app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService',
 }]);
 
 // controlador para la gestion y control de servicios realizados por el usuario
-app.controller('MyservicesCtrl', ['$scope', 'ServicioUser', function($scope, ServicioUser){
+app.controller('MyservicesCtrl', ['$scope', 'ServicioUser', '$location', function($scope, ServicioUser, $location){
 	// traigo todos los servicios del usuario actual
 	$scope.hayserives = true;
 	ServicioUser.getServiceUser()
@@ -54,6 +54,11 @@ app.controller('MyservicesCtrl', ['$scope', 'ServicioUser', function($scope, Ser
 			$scope.services = servicios;
 			if (servicios !="") {$scope.hayserives=false};
 		});
+
+		$scope.newService = function(){
+			$location.url('/home');
+		}
+
 }]);//fin controlador MyservicesCtrl
 
 app.controller('PrivateController', ['$scope', '$auth', '$location', function($scope, $auth, $location){
@@ -89,13 +94,32 @@ app.config(['$httpProvider', 'satellizer.config', function($httpProvider, config
 // Creo un controlador para manejar la parte de la cotización
 // del usuario
 app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocation','localStorageService', 'Empresa', function($scope, $http, $location, geolocation, localStorageService, Empresa){
-
 	$scope.ver = false;
+	$scope.ver_otro = false;
 	geolocation.buscar();
+	// $scope.selected = 'Sobre';
+
+	// Validación de la ciudad
+	// if ($scope.ciudad !== undefined) {
+	// 	console.log('ciudad: '+ $scope.ciudad);
+	// }
+
+	// Validación de tipo de serivicio - cuando el usuario selecciona otro
+	// le deberia mostrar la opcion para ingresar el tipo de servicio
+	$scope.otroServicio = function(){
+		if ($scope.tipoServicio == 'Otro') {
+			console.log($scope.tipoServicio);
+			$scope.ver_otro = true;
+			// $scope.tipoServicio = $scope.otro;
+		}else{
+			$scope.ver_otro = false;
+		}
+	}
+
 		
 	//Funcion para mostrar el mapa al hacer clic en Cotizar
 	$scope.mostrarInfo = function(){
-	  	$scope.ver = true;
+
 	  	var oirigin =null;
 	  	var destination = null;
 
@@ -113,6 +137,7 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 	  	}else{
 	  		destination = ruta.destination;
 	  	}
+
 	  	console.log(origin);
 	  	console.log(destination);
 
@@ -136,6 +161,10 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 			setTimeout(function(){
 				$scope.$apply(function(){
 					$scope.distancia=$scope.distancia;
+					$scope.ver = true;
+			  		$scope.tipoServicio = $scope.tipoServicio;
+			  		$scope.destino = $scope.destino;
+			  		$scope.origen = $scope.origen;
 				})
 			}, 100);
 		});
@@ -147,19 +176,29 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 	  	success(function(data, status, headers, config){
 	  		$scope.empresas = data;
 	  	});
+
 	};
 
 	//Funcion para pasar los datos del servicios seleccionado por
 	//el usuario a la siguiente vista donde realizará la validación
-	$scope.servicioSeleccionado = function (id, valor){
+	$scope.servicioSeleccionado = function (id, valor, tipo){
 		// creo un objeto con el servicio para almacenarlo en el localstorage
+
+		if ($scope.otro !== "") {
+			$scope.tipoServicio = $scope.otro;
+		}
+
+		console.log($scope.tipoServicio);
+
 		var service = {
+			tipoServicio: $scope.tipoServicio,
 			idEmpresa: id,
 			estado: "En proceso",
 			origen: $scope.origen,
 			destino: $scope.destino,
 			valorService: valor
 		};
+		console.log(service)
 
 		// almeceno el servicio en el navegador del cliente
 		localStorageService.set('service', service);
@@ -187,7 +226,7 @@ app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
 		// 	console.log('Error: ' + data);
 		// });
 
-        var file =$scope.logoEmpresa;
+        var file = $scope.logoEmpresa;
         var fd = new FormData();
         fd.append('nombreEmpresa', $scope.nombreEmpresa);
         fd.append('nitEmpresa', $scope.nitEmpresa);
@@ -254,7 +293,8 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 
 	service = localStorageService.get('service');
 	$scope.resumen = "Resumen del servicio";
-	// $scope.empresa = Compra.servicio.empresa;
+	$scope.tipo = service.tipoServicio;
+	// $scope.ciudad = service.ciudad;
 	$scope.valor = service.valorService;
 	$scope.origen = service.origen;
 	$scope.destino = service.destino;
@@ -285,8 +325,8 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 			nombre: $scope.nombre,
 			email: $scope.email,
 			telefono: $scope.telefono,
-			usuario: $scope.usuario,
-			password: $scope.password
+			usuario: $scope.usuario_up,
+			password: $scope.password_up
 		})
 		.then(function(data){
 			//si ha sido registrado correctamente 
@@ -303,6 +343,8 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
 
 	// login facebook
 	$scope.loginFace = function(provider) {
+		// if ($scope.tipoPago == "") {};
+
 		app.config(function($authProvider){
 			$authProvider.loginRedirect = '/resumen';
 			$authProvider.baseUrl = '/resumen';
@@ -375,6 +417,8 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 		var tipoPago = localStorageService.get('tipoPago');
 	   
 		$scope.titlePage = "Confirmación y envío del servicio";
+		$scope.tipo = service.tipoServicio;
+		// $scope.ciudad = service.ciudad;
 		$scope.tipoPago = tipoPago;
 		$scope.origen = service.origen;
 		$scope.destino = service.destino;
@@ -389,16 +433,21 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 			idEmpresa: service.idEmpresa,
 			estadoService: 'Esperando confirmacion',
 			dirOrigen: $scope.origen,
-			dirDestino: $scope.destino
+			dirDestino: $scope.destino,
+			comentario: '',
+			tipoServicio: service.tipoServicio
 		}
 
 		$scope.ver = false;
 		// funcion para enviar el servicio al server
 		$scope.sendService = function(){
+			myService.comentario = $scope.comentario;
+			console.log($scope.comentario);
 			$scope.ver = true;
 			$http.post('https://api-domi.herokuapp.com/api/service', myService)
 			.success(function(data) {
 				$scope.respuesta = "Su servicio se envío éxitosamente!";
+				console.log(data);
 
 			})
 			.error(function(data) {
