@@ -19,7 +19,7 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	     <div class="logo-inicio">
-	    	<a class="navbar-brand domisil" href="#/home">Domisil</a>
+	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
 		</div>
 
 	    <div class="menu-movil" ng-controller="HomeCtrl">
@@ -50,8 +50,8 @@
 <div class="row" ng-controller="PerfilCtrl">
 	<div class="col-md-12">
 		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h3 class="panel-title">Mi cuenta</h3>
+			<div class="panel-heading p-heading">
+				<span><a href="#/perfil">Mi cuenta</a> </span> <span><a href="#/myservices" >| Mis últimos servicios</a></span>
 			</div>
 			<div class="panel-body">
 				<div class="col-md-5 datos_perfil">
@@ -80,7 +80,7 @@
 				</div>
 					<div class="col-md-1"></div>
 
-					<div class="col-md-6 cambio_clave">
+					<div class="col-md-6 cambio_clave" ng-show="ver_clave">
 						<h3 class="title-perfil">Cambiar clave</h3>
 						<form class="frm-perfil" role="form">
 							<div class="form-group">
@@ -96,7 +96,6 @@
 						</form>
 					</div>
 			</div>
-					<a href="#/myservices" >Mis últimos servicios</a>
 		</div>
 	</div>
 </div>

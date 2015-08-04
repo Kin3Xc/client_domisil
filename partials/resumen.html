@@ -6,7 +6,7 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	     <div class="logo-inicio">
-	    	<a class="navbar-brand domisil" href="#/home">Domisil</a>
+	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
 		</div>
 
 	    <div class="menu-movil">
@@ -55,24 +55,24 @@
 			    	<p><span class="item">Destino: </span>{{destino}}</p>
 					<p><span class="item">Empresa: </span>{{empresa}}</p>
 			    	<p><span class="item">Valor: </span>{{valor | currency : 'CO$' : 0}}</p>
-			    	<p><span class="item">Usuario: </span>{{usuario[0].usuario}}</p>
+			    	<p><span class="item">Usuario: </span>{{usuario[0].nombre}}</p>
 		    	</div>
 
 		    	<div class="col-md-6">
 					<div class="form-group">
 						<label class="label-control">Agregar comentario</label>
-						<textarea class="form-control" ng-model="comentario" cols="6" rows="5" placeholder="Ingrese un comentario para su servicio"></textarea>
+						<textarea id="comentario" class="form-control" ng-model="comentario" cols="6" rows="5" placeholder="Ingrese un comentario para su servicio"></textarea>
 					</div>
 				</div>
 				
 				<button class="btn btn-primary" ng-click="sendService()">Enviar servicio</button>
-				<button ng-click="print('print')" class="btn btn-primary">Imprimir</button>
 			</div>
 		</div>
 
 		<div class="alert alert-dismissable alert-success" ng-show="ver">
 		    <button type="button" class="close" data-dismiss="alert">×</button>
 		    <strong>{{respuesta}} </strong> 
+		    <button ng-click="print('print')" class="btn btn-primary imprimir">Imprimir Recibo</button>
 		</div>
 		
 	<!-- </div> -->

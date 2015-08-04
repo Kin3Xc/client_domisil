@@ -28,7 +28,7 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	    <div class="logo-inicio">
-	    	<a class="navbar-brand domisil" href="#/home">Domisil</a>
+	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
 		</div>
 	    <div class="menu-movil" ng-controller="HomeCtrl">
 	    	<a ng-if="autenticar()" href="#/perfil">Perfil</a>
@@ -62,8 +62,8 @@
 	<div class="col-md-6">
 		<div class="panel panel-info" id="panel">
 
-		        <h1 class="titulo">DOMISIL</h1>
-		        <h4 class="tagLine">Envíos inmediatos en Bogotá</h4>
+		        <!-- <h1 class="titulo">DOMISIL</h1> -->
+		        <h4 class="tagLine">Envíos Inmediatos en Bogotá</h4>
 
 		    <div class="panel-body">
 		       <form role="form" ng-submit="mostrarInfo()" class="form-horizontal formulario" >
@@ -87,7 +87,7 @@
 			       			<label for="otro" class="control-label">Descripción del servicio</label>
 			       			<div class=" input-group col-lg-10">
 			       				<span class="input-group-addon mdi-action-home icon-text" id="city-icon"></span>
-			       				<input ng-model="otro" type="text" class="form-control" id="otro" />
+			       				<input ng-model="otro" type="text" class="form-control" id="otro" placeholder="Ingrese qué envía"/>
 		                	</div>
 			       		</div>
 
@@ -153,4 +153,5 @@
 		    </table>
 		</div>
 	</div>
+</div>
 </div>

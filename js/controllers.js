@@ -16,6 +16,8 @@ app.controller('HomeCtrl', ['$scope', 'localStorageService','Cuenta', '$auth', f
 
 // controlador para la administración de la cuenta de usuario
 app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService', function($scope, Cuenta, $http, localStorageService){
+	$scope.ver_clave = true;
+
 	// cargo los datos del usuario
 	Cuenta.getProfile()
 		.success(function(data) {
@@ -24,7 +26,15 @@ app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService',
           $scope.nombre = data[0].nombre;
           $scope.email = data[0].email;
           $scope.telefono = data[0].telefono;
+          $scope.facebook = data[0].facebook;
+          console.log($scope.facebook);
+        if ($scope.facebook != undefined) {
+        	$scope.ver_clave = false;
+        }else{
+        	$scope.ver_clave = true;
+        }
         });
+
 
     $scope.editPerfile = function(){
     	var user = {
@@ -119,7 +129,7 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 		
 	//Funcion para mostrar el mapa al hacer clic en Cotizar
 	$scope.mostrarInfo = function(){
-
+		
 	  	var oirigin =null;
 	  	var destination = null;
 
@@ -160,13 +170,13 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 
 			setTimeout(function(){
 				$scope.$apply(function(){
-					$scope.distancia=$scope.distancia;
-					$scope.ver = true;
+					$scope.distancia = $scope.distancia;
 			  		$scope.tipoServicio = $scope.tipoServicio;
 			  		$scope.destino = $scope.destino;
 			  		$scope.origen = $scope.origen;
+					$scope.ver = true;
 				})
-			}, 100);
+			}, 800);
 		});
 
 

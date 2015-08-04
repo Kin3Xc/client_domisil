@@ -19,7 +19,7 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	     <div class="logo-inicio">
-	    	<a class="navbar-brand domisil" href="#/home">Domisil</a>
+	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
 		</div>
 
 	   	<div class="menu-movil" ng-controller="HomeCtrl">
@@ -51,7 +51,12 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-info">
-			<div class="panel-heading"><h3 class="panel-title">Mis servicios</h3></div>
+			<div class="panel-heading">
+				<!-- <h3 class="panel-title">Mis servicios</h3> -->
+				<div class="panel-heading p-heading">
+				<span><a href="#/myservices">Mis últimos servicios</a> </span> <span><a href="#/perfil" >| Mi cuenta</a></span>
+			</div>
+			</div>
 			<div class="panel-body">
 				<div class="services table-responsive">
 					<h1 ng-if="hayserives">No tiene servicios</h1>
@@ -79,7 +84,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<button  ng-click="newService()" class="btn btn-success btn-fab btn-raised mdi-content-add"></button>
+					<button  ng-click="newService()" class="btn btn-success btn-fab btn-raised mdi-content-add"></button><span class="nuevo">Nuevo servicio</span>
 				</div>
 			</div>
 		</div>
