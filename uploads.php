@@ -6,8 +6,8 @@
         //obtenemos el archivo a subir
         $archivo = $_FILES['logoEmpresa'];
         //obetenemos nombre del archivo
-        // $file = $_FILES['logoEmpresa']['name']; 
-        $file = $_POST['nombre']; 
+        $file = $_FILES['logoEmpresa']['name']; 
+        // $file = $_POST['nombre']; 
         //comprobamos si existe un directorio para subir el archivo
         //si no es así, lo creamos
         if(!is_dir("uploads/"))

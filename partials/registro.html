@@ -46,7 +46,7 @@
         </ul>
 	</li>
 	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
-	<li ng-if="!autenticar()" >|</li>
+	<!-- <li ng-if="!autenticar()" >|</li> -->
 	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
 	</ul>
 	</div>
@@ -56,6 +56,22 @@
 	<h1 class="titulo tituloForm">Registro de empresas</h1>
 	<form class="form-horizontal" action="">
 	    <fieldset>
+	    	<div class="col-md-12">
+		    	<div class="form-group col-md-6">
+		            <label for="user" class="control-label">Usuario</label>
+		            <div class="col-lg-12">
+		                <input  ng-model="usuarioEmpresa" type="text" class="form-control" id="user" placeholder="Usuario">
+		            </div>
+		        </div>
+		        <div class="form-group col-md-6">
+		            <label for="pwd" class="control-label">Contraseña</label>
+		            <div class="col-lg-12">
+		                <input  ng-model="passwordEmpresa" type="password" class="form-control" id="pwd">
+		            </div>
+		        </div>
+	        </div>
+
+
 	        <div class="form-group">
 	            <label for="nombreEmpresa" class="col-lg-2 control-label">Nombre empresa</label>
 	            <div class="col-lg-10">

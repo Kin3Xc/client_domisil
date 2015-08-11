@@ -397,9 +397,65 @@ body{
 	color: #34495e;
 }
 
+.menu-vertical{
+	background-color: #ecf0f1;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.contenido{
+	/*background-color: #bdc3c7;*/
+	border: 1px #bdc3c7 dashed;
+	padding: 10px;
+}
+
+.icon-empresa{
+	color: #16a085;
+	font-size: 1.9em;
+	font-weight: bold;
+}
+.numero{
+	color: #d35400;
+	font-weight: bold;
+	font-size: 1.4em;
+}
+.items{
+	/*border: 1px #bdc3c7 dashed;*/
+	margin-bottom: 10px;
+	padding: 5px;
+}
+.info-empresa{
+	text-align: center;
+}
+.menu-empresa{
+	padding: 10px;
+	margin: 0;
+}
+.menu-list{
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+.menu-list ul li{
+	list-style: none;
+}
+.menu-list ul li a{
+	padding: 9px !important;
+	/*background-color: rgba(0,0,0,0.2);*/
+	text-decoration: none;
+	margin: 4px;
+}
+.menu-list ul li a:hover{
+	font-style: none;
+	/*background-color: rgba(0,0,0,0.1);*/
+	text-decoration: none;
+	background-color: rgba(123,120,120,0.2);
+}
 @media screen and (max-width: 767px){
 	.navbar-toggle{
 		display: none !important;
+	}
+	.menu-emp{
+		display: block !important;
 	}
 	.menu-movil{
 		display: block;
@@ -422,3 +478,34 @@ body{
 
 	}
 }
+.position{
+	float: right;
+}
+
+.foto{
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+/* make sidebar nav vertical */ 
+/*@media (min-width: 768px) {
+  .sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
+  .sidebar-nav .navbar ul {
+    float: none;
+  }
+  .sidebar-nav .navbar ul:not {
+    display: block;
+  }
+  .sidebar-nav .navbar li {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}*/

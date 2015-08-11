@@ -1,0 +1,168 @@
+<script>
+    $(document).ready(function() {
+    	$(document).ready(function() {
+            $.material.init();
+        });
+    });
+</script>
+
+
+<div class="navbar navbar-default">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <div class="logo-inicio">
+	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
+		</div>
+	    <div class="menu-movil" ng-controller="EmpresaCtrl">
+	    	<a ng-if="autenticar()" href="">Perfil</a>
+	    	<a ng-if="autenticar()" href="">Servicios</a>
+	    	<a ng-if="autenticar()" href="#/logout">Cerrar sesión</a>
+
+	    	<a ng-if="!autenticar()" href="#/login">Ingresar</a>
+			<a ng-if="!autenticar()" href="#/signup">Registrar</a>
+	    </div>
+	</div>
+
+	<div class="navbar-collapse collapse navbar-responsive-collapse">
+	<ul class="menu-home" ng-controller="EmpresaCtrl">
+	<li class="dropdown" ng-if="autenticar()">
+		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{empresa[0].nombreEmpresa}}<b class="caret"></b></a>
+		<ul class="dropdown-menu">
+            <li><a href="">Editar perfil</a></li>
+            <li><a href="">Informe de servicios</a></li>
+            <!-- <li class="divider"></li> -->
+            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
+        </ul>
+	</li>
+	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
+	<!-- <li ng-if="!autenticar()" >|</li> -->
+	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
+	</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-xs-12">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">Panel de administración</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row items">
+					<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" ng-controller="EmpresaCtrl">
+						<div class="info-empresa">
+							<i class="mdi-social-notifications icon-empresa"></i>
+							<span class="numero">{{pendientes}}</span>
+							<p>Pendientes</p>
+						</div>
+					</div>
+						<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" ng-controller="EmpresaCtrl">
+						<div class="info-empresa">
+							<i class="mdi-maps-place icon-empresa"></i>
+							<span class="numero">{{asignados}}</span>
+							<p>Servicios</p>
+						</div>
+					</div>
+					<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" ng-controller="DomisiliariosCtrl">
+						<div class="info-empresa">
+							<i class="mdi-social-people icon-empresa"></i>
+							<span class="numero">{{domi}}</span>
+							<p>Domisiliarios</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="row menu-list">
+				<!-- <div class=""> -->
+					<ul>
+				        <li><a href="#/empresa">Gestionar servicios</a></li>
+				        <li><a href="#/domisiliarios">Gestionar domiciliarios</a></li>
+				        <li><a href="">Informe de servicios</a></li>
+				        <li><a href="">Editar datos</a></li>
+			        </ul>
+		        <!-- </div> -->
+		        </div>
+
+				  <div class="contenido" ng-controller="EmpresaCtrl">
+				    <h3>Gestion de servicios</h3>
+				    <div class="services table-responsive">
+					<h1 ng-if="hayserives">No tiene servicios</h1>
+					<table class="table table-hover">
+						<thead >
+							<tr>
+								<th>Tipo</th>
+								<th>Origen</th>
+								<th>Destino</th>
+								<th>Cliente</th>
+								<th>Precio</th>
+								<th>Acción</th>
+							</tr>
+						</thead>	
+						<tbody>
+							<tr ng-repeat="service in servicios"> 
+								<!-- <td>{{$index + 1}}</td> -->
+								<td>{{service.tipoDePago}}</td>
+								<td>{{service.dirOrigen}}</td>
+								<td>{{service.dirDestino}}</td>
+								<td>{{service.userId.nombre}}</td>
+								<td>{{service.valorPedido}}</td>
+								<td><button class="btn btn-success btn-xs" ng-click="asignarDomi(service._id)" data-toggle="modal" data-target="#asignar">Asignar</button></td>
+							</tr>
+						</tbody>
+					</table>
+				<!-- 	<button  ng-click="newService()" class="btn btn-success btn-fab btn-raised mdi-content-add"></button><span class="nuevo">Nuevo servicio</span> -->
+				</div>
+				  </div>
+				<!-- </div> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal" id="asignar" ng-controller="EmpresaCtrl">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Asignar servicio</h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p>One fine body…</p> -->
+            	<table class="table table-hover">
+					<thead >
+						<tr>
+							<th>#</th>
+							<th>Foto</th>
+							<th>Nombre</th>
+							<th>Cedula</th>
+							<th>Telefono</th>
+							<th>Email</th>
+							<th>Acción</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="domiDisponible in domiDisponibles"> 
+							<td>{{$index + 1}}</td>
+							<td><img class="foto" src="uploads/{{domiDisponible.foto}}"></td>
+							<td>{{domiDisponible.nombre}}</td>
+							<td>{{domiDisponible.numCedula}}</td>
+							<td>{{domiDisponible.telefono}}</td>
+							<td>{{domiDisponible.email}}</td>
+							<td><button class="btn btn-success btn-xs" ng-click="asignarService()">Asignar</button></td>
+						</tr>
+					</tbody>
+				</table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <!-- <button type="button" class="btn btn-primary">Guardar cambios</button> -->
+            </div>
+        </div>
+    </div>
+</div>

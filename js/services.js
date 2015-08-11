@@ -6,10 +6,27 @@ app.factory('Cuenta', function($http, localStorageService) {
     return {
       getProfile: function() {
       	var id = localStorageService.get('idUser');
+      	console.log('ID como esta: ' + id)
       	if (id != null) {
         	return $http.get('https://api-domi.herokuapp.com/api/users/'+id);      		
-      	}else{
+      	}
+      	else{
         	return $http.get('https://api-domi.herokuapp.com/api/users');
+      	}
+      }
+    };
+});
+
+app.factory('perfilEmpresa', function($http, localStorageService) {
+    return {
+      getEmpresa: function() {
+      	var idEmp = localStorageService.get('empresaId');
+      	if(idEmp !== null){
+        	return $http.get('https://api-domi.herokuapp.com/api/emp-domiciliarios/'+idEmp);
+      		
+      	}else{	
+       		return $http.get('https://api-domi.herokuapp.com/api/emp-domiciliarios');
+      		
       	}
       }
     };

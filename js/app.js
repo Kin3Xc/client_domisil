@@ -120,6 +120,24 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 		.state('nosotros', {
 			url: '/nosotros',
 			templateUrl: 'partials/nosotros.html'
+		})
+
+		.state('empresa', {
+			url: '/empresa',
+			templateUrl: 'partials/empresa.html',
+			controller: 'EmpresaCtrl'
+		})
+
+		.state('loginEmpresa', {
+			url: '/loginEmpresa',
+			templateUrl: 'partials/loginEmpresa.html',
+			controller: 'EmpresaCtrl'
+		})
+
+		.state('domisiliarios', {
+			url: '/domisiliarios',
+			templateUrl: 'partials/domisiliarios.html',
+			controller: 'DomisiliariosCtrl'
 		});
 
 		$urlRouterProvider.otherwise('/');

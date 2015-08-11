@@ -2,12 +2,24 @@ var app = angular.module('domisilapp.controllers', ['ui.router', 'ngAnimate', 's
 
 
 // home '/' controller
-app.controller('HomeCtrl', ['$scope', 'localStorageService','Cuenta', '$auth', function($scope, localStorageService, Cuenta, $auth){
-	Cuenta.getProfile()
-		.success(function(data) {
-          $scope.user = data;
-          // console.log($scope.user[0].usuario);
-    	});
+app.controller('HomeCtrl', ['$scope', 'localStorageService','Cuenta', '$auth', '$http', function($scope, localStorageService, Cuenta, $auth, $http){
+	// Cuenta.getProfile()
+	// 	.success(function(data) {
+ //          $scope.user = data;
+ //          // console.log($scope.user[0].usuario);
+ //    	});
+
+	var id = localStorageService.get('idUser');
+	if (id != null) {
+		$http.get('https://api-domi.herokuapp.com/api/users/'+id)
+			.success(function(data) {
+				$scope.user = data;
+		    })
+			.error(function(data) {
+					// $scope.respuesta = "Error en la actualización!";
+					console.log('Error: ' + data);
+			});
+	}
 
 	$scope.autenticar = function() {
       return $auth.isAuthenticated();
@@ -19,8 +31,10 @@ app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService',
 	$scope.ver_clave = true;
 
 	// cargo los datos del usuario
-	Cuenta.getProfile()
-		.success(function(data) {
+	var id = localStorageService.get('idUser');
+	if (id != null) {
+		$http.get('https://api-domi.herokuapp.com/api/users/'+id)
+			.success(function(data) {
           // $scope.user = data;
           $scope.usuario = data[0].usuario;
           $scope.nombre = data[0].nombre;
@@ -33,8 +47,13 @@ app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService',
         }else{
         	$scope.ver_clave = true;
         }
-        });
+        })
+		.error(function(data) {
+				// $scope.respuesta = "Error en la actualización!";
+				console.log('Error: ' + data);
+		});
 
+		}
 
     $scope.editPerfile = function(){
     	var user = {
@@ -52,8 +71,181 @@ app.controller('PerfilCtrl',['$scope', 'Cuenta', '$http', 'localStorageService',
     		console.log(data);
     	});
     };
-
 }]);
+
+
+// controlador para gestionar el acceso a las empresas al sistema
+app.controller('EmpresaCtrl', ['$scope', 'perfilEmpresa', '$auth', 'localStorageService', '$location', '$http', function($scope, perfilEmpresa, $auth, localStorageService, $location, $http){
+	    // traigo los datos de la empresa
+	perfilEmpresa.getEmpresa()
+		.success(function(data){
+			// console.log(data);
+			$scope.empresa = data;
+	});
+
+	$scope.autenticar = function() {
+      return $auth.isAuthenticated();
+    };
+
+    $scope.login = function(){
+		console.log($scope.password);
+		$auth.login({
+			usuario: $scope.usuario,
+			password: $scope.password,
+			roll: 'Empresa'
+		})
+		.then(function(data){
+			// si ha ingresado correctamente, lo tratamos aqui
+			// podemos tambien redigirle a una ruta
+			// Compra.servicio.userLocal = vm.usuario;
+			$scope.empresa = data.data.empresa;
+			console.log(data);
+			console.log('ID: '+data.data.empresa._id);
+			localStorageService.set('empresaId', data.data.empresa._id);
+			$location.path('/empresa');
+		})
+		.catch(function(response){
+			// si ha habido errores
+			console.log(response.data.message);
+			console.log(response.data.result);
+			console.log(response.data.pwd);
+			console.log(response.data.llega);
+		});
+
+	}
+
+	var id = localStorageService.get('empresaId');
+	if (id != null) {
+		$http.get('https://api-domi.herokuapp.com/api/servicesAsignar/'+id)
+			.success(function(data) {
+				console.log(data);
+				console.log('Servicios Pendientes: '+data.pendientes);
+				console.log('Servicios Asignados: '+data.asignados);
+				$scope.pendientes = data.pendientes;
+				$scope.asignados = data.asignados;
+				$scope.servicios = data.data;
+		    })
+			.error(function(data) {
+					// $scope.respuesta = "Error en la actualización!";
+					console.log('Error');
+					console.log(data);
+			});
+	}
+
+	// traigo todos los domisiliarios disponibles
+	var id = localStorageService.get('empresaId');
+	if (id != null) {
+		$http.get('https://api-domi.herokuapp.com/api/domiEstado/'+id)
+			.success(function(data) {
+				console.log(data);
+				$scope.domiDisponibles = data.data;
+		    })
+			.error(function(data) {
+					// $scope.respuesta = "Error en la actualización!";
+					console.log('Error');
+					console.log(data);
+			});
+	}
+
+	$scope.asignarDomi = function(id){
+		// idSerice = id;
+		localStorageService.set('idService', id);
+	};
+
+	// funcion para asignar el servicio a un domisiliario
+	$scope.asignarService = function(){
+		var idService = localStorageService.get('idService');
+		console.log(idService);
+		var service = {
+			estadoService: 'Asignado',
+			idDomisiliario: idService
+		};
+		$http.put('https://api-domi.herokuapp.com/api/service/' + idService, service)
+			.success(function(data){
+				console.log('Actualizo');
+				console.log(data);
+			})
+			.error(function(err){
+				console.log(err);
+			});
+	};
+
+	
+}]);//fin controlador empresa
+
+// controlador para gestionar los domisiliarios por empresas
+app.controller('DomisiliariosCtrl', ['$scope', '$http', 'localStorageService', function($scope, $http,localStorageService){
+	// cargo los domisiliarios de la empresa
+	var idEmpresa = localStorageService.get('empresaId');
+	$http.get('https://api-domi.herokuapp.com/api/domiciliariosEmpresa/'+idEmpresa)
+		.success(function(data){
+			// console.log(data.data);
+			$scope.domi = data.domisiliarios;
+			$scope.domisiliarios = data.data;
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+
+	// funcion para registrar un domisiliario
+	$scope.ver = false;
+	$scope.addDomisiliario = function(){
+		var file = $scope.foto;
+		var idEmpresa = localStorageService.get('empresaId');
+		var domisiliario = {
+			nombre: $scope.nombre,
+			numCedula: $scope.numCedula,
+			email: $scope.email,
+			telefono: $scope.telefono,
+			idEmpresa: idEmpresa,
+			foto: file.name
+		};
+
+		var file = $scope.foto;
+        console.log(file.name);
+        var fd = new FormData();
+        // fd.append('nombreEmpresa', $scope.nombreEmpresa);
+        // fd.append('nitEmpresa', $scope.nitEmpresa);
+        // fd.append('tarifaKm', $scope.tarifaKm);
+        // fd.append('telefono', $scope.telefono);
+        // fd.append('email', $scope.email);
+        // fd.append('roll', $scope.roll);
+        fd.append('logoEmpresa', file);
+
+		// petición al api para regstrar domisiliario
+		$http.post('https://api-domi.herokuapp.com/api/domiciliarios', domisiliario)
+			// si todo sale bein
+			.success(function(data) {
+				upload(fd);
+				$scope.ver = true;
+				$scope.respuesta = "Los datos fueron registrados!";
+				// console.log(data);
+
+			})
+			// si hay error
+			.error(function(data) {
+				$scope.respuesta = "Error en el registro!";
+				console.log('Error: ' + data);
+			});
+
+
+
+	}; // fin funcion addDomisisliario
+	function upload (form) {
+		$http.post('http://domisil.co/uploads.php',form, {
+		    transformRequest: angular.identity, 
+            headers: {'Content-Type': undefined}
+            })
+            .success(function(response){
+				console.log('Respuesta: '+response);
+            })
+            .error(function(response){
+        });
+	};
+}]); //fin controlador de domisiliarios
+
+
 
 // controlador para la gestion y control de servicios realizados por el usuario
 app.controller('MyservicesCtrl', ['$scope', 'ServicioUser', '$location', function($scope, ServicioUser, $location){
@@ -107,12 +299,62 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 	$scope.ver = false;
 	$scope.ver_otro = false;
 	geolocation.buscar();
+	$scope.activo = false;
 	// $scope.selected = 'Sobre';
 
 	// Validación de la ciudad
 	// if ($scope.ciudad !== undefined) {
 	// 	console.log('ciudad: '+ $scope.ciudad);
 	// }
+	var origen = '';
+ 	// obtener posición del usuario
+
+ 	$scope.view_position = function(){
+ 		// setTimeout(function(){
+ 		// $scope.$apply(function(){
+ 		// $scope.origen = '';
+ 		console.log('Aqui voy');
+ 		  	if (navigator.geolocation) {
+	  		var geocoder = new google.maps.Geocoder();
+	  		navigator.geolocation.getCurrentPosition(function(position){
+	  			var lat = position.coords.latitude;
+	  			var lng = position.coords.longitude;
+	  			console.log('LAT: ' + lat + ' LON: ' + lng);
+
+	  			var latlng = new google.maps.LatLng(lat, lng);
+	  			geocoder.geocode({'latLng': latlng}, function(results, status){
+	  				if (status == google.maps.GeocoderStatus.OK) {
+	  					if (results[0]) {
+	  						// console.log('Dirección: ' +results[0].formatted_address);
+	  						var origen = results[0].formatted_address;
+	  						console.log('origen: '+origen);
+
+	  						if ($scope.activo) {
+	  						// setTimeout(function(){
+	  						// 	$scope.$apply(function(){
+	  						// 		$scope.origen = origen;
+	  						// 	});
+	  						// }, 100);
+	  						
+	  						$scope.$apply(function(){
+	  						$scope.origen = origen;
+
+	  						});
+
+	  					}else{
+	  						$scope.$apply(function(){
+	  						$scope.origen = '';
+
+	  						});
+	  					}
+	  					}
+	  				}
+	  			});
+	  		});
+	  	}
+	  	// })
+	  	// }, 500);
+ 	}	
 
 	// Validación de tipo de serivicio - cuando el usuario selecciona otro
 	// le deberia mostrar la opcion para ingresar el tipo de servicio
@@ -167,17 +409,18 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 			}else{
 				alert('No existen rutas entre ambos puntos');
 			}
-
-			setTimeout(function(){
-				$scope.$apply(function(){
-					$scope.distancia = $scope.distancia;
-			  		$scope.tipoServicio = $scope.tipoServicio;
-			  		$scope.destino = $scope.destino;
-			  		$scope.origen = $scope.origen;
-					$scope.ver = true;
-				})
-			}, 800);
+		setTimeout(function(){
+			$scope.$apply(function(){
+				$scope.distancia = $scope.distancia;
+		  		$scope.tipoServicio = $scope.tipoServicio;
+		  		$scope.destino = $scope.destino;
+		  		$scope.origen = $scope.origen;
+				$scope.ver = true;
+			})
+		}, 200);
 		});
+
+
 
 
 		//Peticion get a la API para traer todas las epmresas y sus tarifas 
@@ -186,7 +429,6 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 	  	success(function(data, status, headers, config){
 	  		$scope.empresas = data;
 	  	});
-
 	};
 
 	//Funcion para pasar los datos del servicios seleccionado por
@@ -220,7 +462,7 @@ app.controller('cotizadorController', ['$scope', '$http', '$location', 'geolocat
 
 
 //Controlador para registrar una nueva empresa al sistema
-app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
+app.controller('RegistroCtrl',['$scope', '$http', '$location', 'localStorageService', '$auth', function($scope, $http, $location, localStorageService, $auth){
 	$scope.empresa = {};
 	$scope.registrarEmpresa = function(){
 		// console.log('Logo: '+$scope.empresa.logoEmpresa);
@@ -235,55 +477,102 @@ app.controller('RegistroCtrl',['$scope', '$http', function($scope, $http){
 		// 	$scope.respuesta = "Error en el registro!";
 		// 	console.log('Error: ' + data);
 		// });
+		
+		$scope.roll = "Empresa";
 
         var file = $scope.logoEmpresa;
+        console.log(file.name);
         var fd = new FormData();
-        fd.append('nombreEmpresa', $scope.nombreEmpresa);
-        fd.append('nitEmpresa', $scope.nitEmpresa);
-        fd.append('tarifaKm', $scope.tarifaKm);
-        fd.append('telefono', $scope.telefono);
-        fd.append('email', $scope.email);
+        // fd.append('nombreEmpresa', $scope.nombreEmpresa);
+        // fd.append('nitEmpresa', $scope.nitEmpresa);
+        // fd.append('tarifaKm', $scope.tarifaKm);
+        // fd.append('telefono', $scope.telefono);
+        // fd.append('email', $scope.email);
+        // fd.append('roll', $scope.roll);
         fd.append('logoEmpresa', file);
 
-        // console.log(fd);
-        $http.post('https://api-domi.herokuapp.com/api/emp-domiciliarios', fd, {
-            transformRequest: angular.identity, 
-            headers: {'Content-Type': undefined}
-            })
-            .success(function(response){
+        var empresa = {
+        	usuario: $scope.usuarioEmpresa,
+        	password: $scope.passwordEmpresa,
+        	nombreEmpresa: $scope.nombreEmpresa,
+        	nitEmpresa: $scope.nitEmpresa,
+        	tarifaKm: $scope.tarifaKm,
+        	telefono: $scope.telefono,
+        	email: $scope.email,
+        	logoEmpresa: file.name,
+        	roll: 'Empresa'
+        };
+
+        // console.log(empresa);
+        // $http.post('https://api-domi.herokuapp.com/api/emp-domiciliarios', fd, {
+        $auth.signup(empresa)
+            .then(function(response){
+            	// console.log(response.data.empresa);
+            	// console.log(response.empresa.logoEmpresa);
                 //Guardamos la url de la imagen y hacemos que la muestre.
-                fd.append('nombre', response.data.logoEmpresa);
-				console.log('Logo: '+response.data.logoEmpresa);
+                // fd.append('nombre', response.empresa.logoEmpresa);
+				// console.log('Logo: '+response.data.logoEmpresa);
 				// var pathimg = response.data.logoEmpresa;
                 upload(fd);
                 $scope.img=true;
                 // $scope.empresas = data;
+                // $scope.emp = response.data.empresa;
+                $scope.estado = true;
 				$scope.respuesta = "El registro fue éxitoso!";
-            })
-            .error(function(response){
+				localStorageService.set('empresaId', response.data.empresa._id);
+				$location.url('/empresa');
 
-        });
+            })
+            .catch(function(response){	
+			// si ha habido errors, llegaremos a esta función 
+			console.log('ERROR');
+			});
+        // });
 	};
 
 	function upload (form) {
-		$http.post('http://domisil.co/uploads.php',form, {
-		    transformRequest: angular.identity, 
-            headers: {'Content-Type': undefined}
-            })
-            .success(function(response){
-				console.log('Respuesta: '+response);
-            })
-            .error(function(response){
-        });
-	};
+	$http.post('http://domisil.co/uploads.php',form, {
+	    transformRequest: angular.identity, 
+        headers: {'Content-Type': undefined}
+        })
+        .success(function(response){
+			console.log('Respuesta: '+response);
+        })
+        .error(function(response){
+    });
+};
 
 }]);
 //Fin controller empresa
 
 
 //Controlador para gestionar toda la parte del servicios hasta el envio del mismo
-app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'localStorageService', function($scope, $location, $auth, Empresa, localStorageService){
+app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'localStorageService', 'Cuenta', '$http', function($scope, $location, $auth, Empresa, localStorageService, Cuenta, $http){
 	$scope.mostrarLogin = true;
+	$scope.mail_face = false;
+
+	var id = localStorageService.get('idUser');
+		if (id != null) {
+			$http.get('https://api-domi.herokuapp.com/api/users/'+id)
+				.success(function(data) {
+					console.log(data);
+			        $scope.facebook = data[0].facebook;
+			      	console.log('ID de facebook '+$scope.facebook);
+			    	if ($scope.facebook != undefined) {
+			    		$scope.mail_face = true;
+			    		$scope.fb_email = data[0].email;
+			        }else{
+			        	$scope.mail_face = false;
+			        }
+			    })
+				.error(function(data) {
+						// $scope.respuesta = "Error en la actualización!";
+						console.log('Error: ' + data);
+				});
+		}
+
+	// Cuenta.getProfile()
+		
 
 	//Valido que el user este logueado para mostrarle el login y el registro
 	if ($auth.isAuthenticated()) {
@@ -386,8 +675,24 @@ app.controller('ServiceCrtl', ['$scope', '$location', '$auth', 'Empresa', 'local
     };
 
 	$scope.validarService = function(){
-		localStorageService.set('tipoPago',$scope.tipoPago);
-		$location.path('/resumen');
+		if ($scope.fb_email != '') {
+			var email = {
+				email: $scope.fb_email
+			}
+			var id = localStorageService.get('idUser');
+			$http.put('https://api-domi.herokuapp.com/api/useremail/'+id, email)
+			.success(function(data) {
+				$scope.respuesta = "Email actualizado!";
+				console.log(data);
+				localStorageService.set('tipoPago',$scope.tipoPago);
+				$location.path('/resumen');
+
+			})
+			.error(function(data) {
+				$scope.respuesta = "Error en la actualización!";
+				console.log('Error: ' + data);
+			});
+		}
 	}
 
 }]);
@@ -416,11 +721,23 @@ app.controller('ResumenCrtl', ['$scope', '$auth', '$location', 'Empresa', 'local
 		});
 
 		// traigo los datos del usuario
+
+		var id = localStorageService.get('idUser');
+		if (id != null) {
+			$http.get('https://api-domi.herokuapp.com/api/users/'+id)
+				.success(function(data) {
+					$scope.usuario = data;
+			    })
+				.error(function(data) {
+						// $scope.respuesta = "Error en la actualización!";
+						console.log('Error: ' + data);
+				});
+		}
 		
-		Cuenta.getProfile()
-			.success(function(data) {
-	          $scope.usuario = data;
-	        });
+		// Cuenta.getProfile()
+		// 	.success(function(data) {
+	 //          $scope.usuario = data;
+	 //        });
 	    
 
 		var service = localStorageService.get('service');
@@ -578,6 +895,7 @@ app.controller('LogoutController', ['$scope', '$auth', '$location', 'localStorag
 			localStorageService.remove('idUser');
 			localStorageService.remove('service');
 			localStorageService.remove('tipoPago');
+			localStorageService.remove('empresaId');
 			$location.path('/');
 		});
 
