@@ -81,8 +81,8 @@
 					<ul>
 				        <li><a href="#/empresa">Gestionar servicios</a></li>
 				        <li><a href="#/domisiliarios">Gestionar domiciliarios</a></li>
-				        <li><a href="#">Informe de servicios</a></li>
-				        <li><a href="#">Editar datos</a></li>
+				        <li><a href="#/servicios">Informe de servicios</a></li>
+				        <!-- <li><a href="#">Editar datos</a></li> -->
 			        </ul>
 		        <!-- </div> -->
 		        </div>
@@ -102,19 +102,19 @@
 								<th>Estado</th>
 								<th>Email</th>
 								<th>Telefono</th>
-								<th>Accion</th>
+								<!-- <th>Accion</th> -->
 							</tr>
 						</thead>	
 						<tbody>
 							<tr ng-repeat="domisiliario in domisiliarios"> 
 								<td>{{$index + 1}}</td>
-								<td><img class="foto" src="uploads/{{domisiliario.foto}}"></td>
+								<td><img class="foto" ng-src="uploads/{{domisiliario.foto}}"></td>
 								<td>{{domisiliario.nombre}}</td>
 								<td>{{domisiliario.numCedula}}</td>
 								<td><span class="label label-success">{{domisiliario.estado}}</span></td>
 								<td>{{domisiliario.email}}</td>
 								<td>{{domisiliario.telefono}}</td>
-								<td><button class="btn btn-info btn-xs">Editar</button></td>
+								<!-- <td><button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#editDomisiliario" ng-click="editarDomisiliario(domisiliario)">Editar</button></td> -->
 							</tr>
 						</tbody>
 					</table>
@@ -155,6 +155,58 @@
                 	<div class="form-group">
                 		<label for="telefono">Teléfono</label>
                 		<input ng-model="telefono" type="text" class="form-control" id="telefono" name="telefono"/>
+                	</div>
+
+                	<div class="form-group">
+			            <label for="foto" class="col-lg-2 control-label"></label>
+		                <input  type="text" readonly="" class="form-control floating-label" placeholder="Foto...">
+		                <input type="file" file-model="foto" name="foto" id="foto">
+		        	</div>
+                </form>
+
+               	<div class="alert alert-dismissable alert-success" ng-show="ver">
+				    <button type="button" class="close" data-dismiss="alert">×</button>
+				    <strong>{{respuesta}} </strong>
+				</div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" ng-click="addDomisiliario()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal para modificar los datos del domisiliario -->
+<div class="modal" id="editDomisiliario" ng-controller="DomisiliariosCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Registrar domisiliario</h4>
+            </div>
+            <div class="modal-body">
+                <!-- <p>One fine body…</p> -->
+                <form>
+                	<div class="form-group">
+                		<label for="nombre">Nombre</label>
+                		<input ng-model="nombre_domi" type="text" class="form-control" id="nombre" />
+                	</div>
+
+                	<div class="form-group">
+                		<label for="ide">Identificación</label>
+                		<input ng-model="numCedula_domi" type="text" class="form-control" id="ide" />
+                	</div>
+
+                	<div class="form-group">
+                		<label for="email">Email</label>
+                		<input ng-model="email_domi" type="text" class="form-control" id="email" />
+                	</div>
+
+                	<div class="form-group">
+                		<label for="telefono">Teléfono</label>
+                		<input ng-model="telefono_domi" type="text" class="form-control" id="telefono"/>
                 	</div>
 
                 	<div class="form-group">

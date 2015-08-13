@@ -99,18 +99,19 @@
 								<th>Destino</th>
 								<th>Cliente</th>
 								<th>Precio</th>
-								<th>Acción</th>
+								<th>Estado</th>
 							</tr>
 						</thead>	
 						<tbody>
-							<tr ng-repeat="service in serviciosPendientes"> 
+							<tr ng-repeat="service in serviciosAsignados"> 
 								<!-- <td>{{$index + 1}}</td> -->
-								<td>{{service.tipoDePago}}</td>
+								<td>{{service.tipoServicio}}</td>
 								<td>{{service.dirOrigen}}</td>
 								<td>{{service.dirDestino}}</td>
 								<td>{{service.userId.nombre}}</td>
 								<td>{{service.valorPedido}}</td>
-								<td><button class="btn btn-success btn-xs" ng-click="asignarDomi(service._id)" data-toggle="modal" data-target="#asignar">Asignar</button></td>
+								<td><span class="label label-success">{{service.estadoService}}</span></td>
+								<!-- <td><button class="btn btn-success btn-xs" ng-click="asignarDomi(service._id)" data-toggle="modal" data-target="#asignar">Asignar</button></td> -->
 							</tr>
 						</tbody>
 					</table>
@@ -121,48 +122,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-<div class="modal" id="asignar" ng-controller="EmpresaCtrl">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Asignar servicio</h4>
-            </div>
-            <div class="modal-body">
-                <!-- <p>One fine body…</p> -->
-            	<table class="table table-hover">
-					<thead >
-						<tr>
-							<th>#</th>
-							<th>Foto</th>
-							<th>Nombre</th>
-							<th>Cedula</th>
-							<th>Telefono</th>
-							<th>Email</th>
-							<th>Acción</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="domiDisponible in domiDisponibles"> 
-							<td>{{$index + 1}}</td>
-							<td><img class="foto" ng-src="uploads/{{domiDisponible.foto}}"></td>
-							<td>{{domiDisponible.nombre}}</td>
-							<td>{{domiDisponible.numCedula}}</td>
-							<td>{{domiDisponible.telefono}}</td>
-							<td>{{domiDisponible.email}}</td>
-							<td><button class="btn btn-success btn-xs" ng-click="asignarService()">Asignar</button></td>
-						</tr>
-					</tbody>
-				</table>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <!-- <button type="button" class="btn btn-primary">Guardar cambios</button> -->
-            </div>
-        </div>
-    </div>
 </div>

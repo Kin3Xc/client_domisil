@@ -118,12 +118,14 @@ app.controller('EmpresaCtrl', ['$scope', 'perfilEmpresa', '$auth', 'localStorage
 	if (id != null) {
 		$http.get('https://api-domi.herokuapp.com/api/servicesAsignar/'+id)
 			.success(function(data) {
-				console.log(data);
-				console.log('Servicios Pendientes: '+data.pendientes);
-				console.log('Servicios Asignados: '+data.asignados);
+				// console.log(data);
+				// console.log('Servicios Pendientes: '+data.pendientes);
+				// console.log('Servicios Asignados: '+data.asignados);
 				$scope.pendientes = data.pendientes;
 				$scope.asignados = data.asignados;
-				$scope.servicios = data.data;
+				console.log(data.dataAsignados);
+				$scope.serviciosPendientes = data.data;
+				$scope.serviciosAsignados = data.dataAsignados;
 		    })
 			.error(function(data) {
 					// $scope.respuesta = "Error en la actualización!";
@@ -137,7 +139,7 @@ app.controller('EmpresaCtrl', ['$scope', 'perfilEmpresa', '$auth', 'localStorage
 	if (id != null) {
 		$http.get('https://api-domi.herokuapp.com/api/domiEstado/'+id)
 			.success(function(data) {
-				console.log(data);
+				// console.log(data);
 				$scope.domiDisponibles = data.data;
 		    })
 			.error(function(data) {
@@ -177,16 +179,17 @@ app.controller('EmpresaCtrl', ['$scope', 'perfilEmpresa', '$auth', 'localStorage
 app.controller('DomisiliariosCtrl', ['$scope', '$http', 'localStorageService', function($scope, $http,localStorageService){
 	// cargo los domisiliarios de la empresa
 	var idEmpresa = localStorageService.get('empresaId');
-	$http.get('https://api-domi.herokuapp.com/api/domiciliariosEmpresa/'+idEmpresa)
-		.success(function(data){
-			// console.log(data.data);
-			$scope.domi = data.domisiliarios;
-			$scope.domisiliarios = data.data;
-		})
-		.error(function(err){
-			console.log(err);
-		});
-
+	if (idEmpresa != null) {
+		$http.get('https://api-domi.herokuapp.com/api/domiciliariosEmpresa/'+idEmpresa)
+			.success(function(data){
+				// console.log(data.data);
+				$scope.domi = data.domisiliarios;
+				$scope.domisiliarios = data.data;
+			})
+			.error(function(err){
+				console.log(err);
+			});
+	}
 
 	// funcion para registrar un domisiliario
 	$scope.ver = false;
@@ -203,7 +206,7 @@ app.controller('DomisiliariosCtrl', ['$scope', '$http', 'localStorageService', f
 		};
 
 		var file = $scope.foto;
-        console.log(file.name);
+        // console.log(file.name);
         var fd = new FormData();
         // fd.append('nombreEmpresa', $scope.nombreEmpresa);
         // fd.append('nitEmpresa', $scope.nitEmpresa);
@@ -243,7 +246,27 @@ app.controller('DomisiliariosCtrl', ['$scope', '$http', 'localStorageService', f
             .error(function(response){
         });
 	};
+
+
+	// funcion para editar un domisiliario por medio de su ID
+	$scope.editarDomisiliario = function(domisiliario){
+		$scope.nombre_domi = domisiliario.nombre;
+		$scope.numCedula_domi = domisiliario.numCedula;
+		$scope.email_domi = domisiliario.email;
+		$scope.telefono_domi = domisiliario.telefono;
+		$scope.foto = domisiliario.foto;
+
+		console.log('Nombre: '+$scope.nombre_domi);
+	};
 }]); //fin controlador de domisiliarios
+
+
+// controlador para gestionar el informe de servicios 
+app.controller('InformeServiceCtrl', ['$scope', function($scope){
+
+}]);//fin controlador informe servicio
+
+
 
 
 
@@ -520,7 +543,7 @@ app.controller('RegistroCtrl',['$scope', '$http', '$location', 'localStorageServ
                 $scope.estado = true;
 				$scope.respuesta = "El registro fue éxitoso!";
 				localStorageService.set('empresaId', response.data.empresa._id);
-				$location.url('/empresa');
+				// $location.url('/empresa');
 
             })
             .catch(function(response){	

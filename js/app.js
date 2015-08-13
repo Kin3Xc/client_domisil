@@ -138,6 +138,12 @@ app.config(function($stateProvider, $authProvider, $urlRouterProvider){
 			url: '/domisiliarios',
 			templateUrl: 'partials/domisiliarios.html',
 			controller: 'DomisiliariosCtrl'
+		})
+
+		.state('servicios', {
+			url: '/servicios',
+			templateUrl: 'partials/servicios.html',
+			controller: 'InformeServiceCtrl'
 		});
 
 		$urlRouterProvider.otherwise('/');

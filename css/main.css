@@ -487,6 +487,18 @@ body{
 	height: 80px;
 	border-radius: 50%;
 }
+.loginEmpresa{
+	float: right;
+	padding: 10px !important;
+	background-color: #e74c3c;
+	color: #FFF !important;
+	margin-right: 30px;
+
+}
+.loginEmpresa:hover{
+	background-color: #c0392b;
+	text-decoration: none;
+}
 
 /* make sidebar nav vertical */ 
 /*@media (min-width: 768px) {
