@@ -6,58 +6,21 @@
     });
 </script>
 
-<div class="navbar navbar-default">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	    </button>
-	     <div class="logo-inicio">
-	    	<a class="navbar-brand domisil" href="#/home">Domisil<span class="puntico">.</span><span class="punto">co</span></a>
-		</div>
-
-	   	<div class="menu-movil" ng-controller="HomeCtrl">
-	    	<a ng-if="autenticar()" href="#/perfil">Perfil</a>
-	    	<a ng-if="autenticar()" href="#/myservices">Servicios</a>
-	    	<a ng-if="autenticar()" href="#/logout">Cerrar sesión</a>
-
-	    	<a ng-if="!autenticar()" href="#/login">Ingresar</a>
-			<a ng-if="!autenticar()" href="#/signup">Registrar</a>
-	    </div>
-	</div>
-	
-	<div class="navbar-collapse collapse navbar-responsive-collapse">
-	<ul class="menu-home" ng-controller="HomeCtrl">
-	<li class="dropdown" ng-if="autenticar()">
-		<a href="" data-target="" class="dropdown-toggle" data-toggle="dropdown">{{user[0].nombre}}<b class="caret"></b></a>
-		<ul class="dropdown-menu">
-            <li><a href="#/perfil">Perfil</a></li>
-            <li><a href="">Historial de servicios</a></li>
-            <!-- <li class="divider"></li> -->
-            <li ng-if="autenticar()"><a href="#/logout">Cerrar sesión</a></li>
-        </ul>
-	</li>
-	<li ng-if="!autenticar()"><a href="#/login">Ingresar</a></li>
-	<!-- <li ng-if="!autenticar()" >|</li> -->
-	<li ng-if="!autenticar()"><a href="#/signup">Registrar</a></li>
-	</ul>
-	</div>
-</div>
-
+<div class="container">
 <div class="row">
 	<div class"col-md-12">
-	<div class="col-md-6">
-		<div class="panel panel-success registro">
+	<div class="col-md-6 signup">
+		<div class="panel panel-default registro">
 		    <div class="panel-heading">
 		        <h3 class="panel-title">Registro</h3>
 		    </div>
 		    <div class="panel-body">
-		       <form class="orm-horizontal" ng-submit="signup.signup()" method="post">
+		    	<!-- <h3>Registro de usuarios</h3> -->
+		       <form ng-submit="signup.signup()" method="post">
 		       		<div class="form-group">
 		       			<label class="control-label">Nombre</label>
 		       			<div class="input-group">
-		       				<span class="input-group-addon mdi-navigaton-apps icon-text"></span>
+		       				<span class="input-group-addon icon-text"></span>
 		       				<input class="form-control" type="text" ng-model="signup.nombre" />
 		       			</div>
 		       		</div>	
@@ -73,7 +36,7 @@
 		       		<div class="form-group">
 		       			<label class="control-label">Teléfono</label>
 		       			<div class="input-group">
-		       				<span class="input-group-addon mdi-navigaton-apps icon-text"></span>
+		       				<span class="input-group-addon icon-text"></span>
 		       				<input class="form-control" type="text" ng-model="signup.telefono" />
 		       			</div>
 		       		</div>
@@ -81,7 +44,7 @@
 		       		<div class="form-group">
 		       			<label class="control-label">Usuario</label>
 					    <div class="input-group">
-					        <span class="input-group-addon mdi-social-person icon-text"></span>
+					        <span class="input-group-addon icon-text"></span>
 					        <input class="form-control" type="text" ng-model="signup.usuario">
 					    </div>
 		       		</div>
@@ -89,19 +52,20 @@
 		       		<div class="form-group">
 		       			<label class="control-label">Password</label>
 					    <div class="input-group">
-					        <span class="input-group-addon mdi-navigation-apps icon-text"></span>
+					        <span class="input-group-addon icon-text"></span>
 					        <input class="form-control" type="password" ng-model="signup.password">
 					    </div>
 		       		</div>
 		       		
-					<button class="btn btn-primary" type="submit">Registrarse</button>
+					<button class="btn btn-success" type="submit">Registrarse</button>
 				</form>
 		    </div>
 		</div>
 	</div>
-	<div class="col-md-2"></div>
-	<div class="col-md-4">
+	<!-- <div class="col-md-2"></div> -->
+<!-- 	<div class="col-md-4">
 		<button href="#/registro" class="btn btn-warning btn-lg empresa-btn" ng-click="signup.ver_registro()">Soy una empresa</button>
+	</div> -->
 	</div>
-	</div>
+</div>
 </div>

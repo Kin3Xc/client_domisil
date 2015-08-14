@@ -1,14 +1,75 @@
+
 body{
 	font-family: 'Open Sans', sans-serif;
-	font-size: 16px;
-	/*background-color: #ecf0f1;*/
-	
+	font-size: 16px;	
 	color: #34495e !important;
+	margin: 0;
+	padding: 0;
 }
-.padre{
+.container{
+	min-height: 100% !important;
+}
+.header{
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.pageHome{
+	background: url(../public/img/header.jpg) no-repeat center;
+	width: 100%;
+	height: 520px;
+	margin: 0;
+	padding: 0;
+}
+.comoFunciona{
+	padding:0;
+	margin: 0;
+}
+.funciona{
+	margin-bottom: 48px;
+}
+/*.padre{
 	background: url(../public/img/header.jpg) no-repeat;
 	width: 100%;
+}*/
+.content{
+	margin-top: 60px;
 }
+
+.content h3{
+	margin:0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+.content .ct1 img{
+	float: right;
+	width: 50%;
+}
+.content .parrafo p{
+	/*font-size: 1em;*/
+}
+
+.content .parrafo{
+	/*width: 36%;*/
+}
+.content .ct2{
+	text-align: right;
+}
+.content .ct2 img{
+	float: left;
+	width: 50%;
+}
+.info-home{
+	background-color: #3498db;
+	color: #FFF;
+	text-align: center;
+	padding: 40px;
+	margin: 0;
+	margin-bottom: 60px;
+}
+.info-home i{
+	font-size: 3.2em;
+}
+
 .domisil{
 	color: #FFF !important;
 	text-align: center;
@@ -22,10 +83,6 @@ body{
 }span
 .navbar-header button span{
 	background-color: #2980b9 !important;
-}
-.header{
-	background-color: #2980b9;
-	opacity: 0.8;
 }
 .p-heading{
 	height: 48px !important;
@@ -44,9 +101,23 @@ body{
 	text-align: center;
 }
 .footer{
-	/*margin-top: 30px;*/
-	margin-bottom: 10px;
-	/*margin: 18px;*/
+	color: #FFF;
+	padding: 10px;
+	margin: 0;
+	background-color: #34495e;
+}
+.footer h4{
+	text-align: center;
+}
+.footer i{
+	font-size: 2em;
+	padding: 6px;
+}
+.footer a i{
+	color: #FFF;
+}
+.footer a i:hover{
+	color: #1abc9c;
 }
 .buscarServicio{
 	background-color: #FFF;
@@ -78,8 +149,14 @@ body{
 .label-info{
 	font-size: 1em;
 }
-.resumen{
-	margin-top: 18px;
+.resumen, 
+.perfil, 
+.myservices, 
+.empresa, 
+.domisiliarios, 
+.servicios{
+	margin-top: 35px;
+	margin-bottom: 35px;
 }
 
 .btnComprar{
@@ -103,8 +180,15 @@ body{
 	margin: 0;
 	/*text-shadow: 1px 2px 1px #2980b9;*/
 }
+.titlePage{
+	color: #1abc9c;
+	text-align: center;
+	text-transform: uppercase;
+}
 .tagLine{
 	text-align: center;
+	/*color: #e67e22;*/
+	text-transform: uppercase;
 }
 .tituloForm{
 	margin-bottom: 40px;
@@ -117,11 +201,14 @@ body{
 }
 .logo-inicio a{
 	font-size: 1.8em;
-	/*color: #FFF !important;*/
-	color: #2980b9 !important;
+	color: #FFF !important;
+	/*color: #2980b9 !important;*/
 	font-weight: bold !important;
-	padding-top:10px !important;
-	margin-top: 10px !important;
+/*	padding-top:10px !important;
+	margin-top: 10px !important;*/
+}
+.puntico, .punto{
+	color: #e67e22;
 }
 .punto{
 	font-size: 20px;
@@ -165,10 +252,10 @@ body{
 }
 
 #panel{
-	margin-top: 5px;
+	margin-top: 20px;
 	padding: 10px;
-	border-radius: 10px;
-	/*background-color: rgba(225,225,225,0.9);*/
+	/*border-radius: 10px;*/
+	background-color: rgba(225,225,225,0.9);
 	/*margin-right: 20px;*/
 }
 .panel{
@@ -224,21 +311,28 @@ body{
 	font-weight: bold;
 	color: #16a085;
 }
+
 .login{
 	float: none;
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.login a{
+	text-align: center;
 }
 .navbar{
-	background-color: transparent !important;
+	/*background-color: rgba(0,0,0,0.2) !important;*/
+	background-color: #1abc9c;
 }
 .menu-home{
 	float:right;
 	margin:0;
 	padding: 0;
-	margin-top: 10px;
+	margin-top: 6px;
 }
 .menu-home li, a{
 	color: #2980b9 !important;
@@ -250,9 +344,10 @@ body{
 	padding: 4px !important;
 }
 .menu-home li a {
-	padding: 9px !important;
+	padding: 6px !important;
 	background-color: rgba(0,0,0,0.5);
 	color: #FFF !important;
+	text-decoration: none;
 }
 .menu-home li a:hover{
 	text-decoration: none;
@@ -487,19 +582,42 @@ body{
 	height: 80px;
 	border-radius: 50%;
 }
+
 .loginEmpresa{
+	font-size: 0.8em;
+	text-decoration:underline;
+	margin: 10px;
+	text-align: center;
 	float: right;
-	padding: 10px !important;
+	/*float: right;*/
+	/*padding: 10px !important;
 	background-color: #e74c3c;
-	color: #FFF !important;
-	margin-right: 30px;
+	color: #FFF !important;*/
+	/*margin-right: 30px;*/
 
 }
+
 .loginEmpresa:hover{
-	background-color: #c0392b;
-	text-decoration: none;
+/*	background-color: #c0392b;
+	text-decoration: none;*/
 }
 
+ .btn-facebook{
+ 	color: #FFF;
+ 	background-color: #3b5998 !important;
+ 	border: 1px solid #335190;
+ }
+
+ .btn-facebook i{
+ 	padding: 8px;
+ }
+
+ .btn-facebook:hover{
+ 	color: #FFF;
+ }
+ .signup{
+ 	/*margin-bottom: 5%;*/
+ }
 /* make sidebar nav vertical */ 
 /*@media (min-width: 768px) {
   .sidebar-nav .navbar .navbar-collapse {
